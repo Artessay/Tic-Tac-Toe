@@ -1,12 +1,17 @@
 package edu.rihong.UI;
 
 import javax.swing.*;
+
+import edu.rihong.App;
+
 import java.awt.*;
 
 public class UI {
     static Image icon = new ImageIcon("img/icon.jpg").getImage();
+    private App app;
 
-    public UI() {
+    public UI(App app) {
+        this.app = app;
         createUI();
     }
 

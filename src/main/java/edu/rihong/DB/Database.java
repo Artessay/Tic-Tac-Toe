@@ -50,8 +50,11 @@ public class Database {
                 String userName = resultSet.getString(1);
                 String passWord = resultSet.getString(2);
 
-                if (name == null)
-                    name = new String[1];
+                if (name == null) {
+                    System.out.println("Program Error, null pointer for Database.login.name");
+                    return false;
+                }
+
                 name[0] = userName;
 
                 return passward.equals(passWord);

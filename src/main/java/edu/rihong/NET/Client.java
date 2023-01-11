@@ -23,6 +23,7 @@ public class Client {
             toServer = new DataOutputStream(socket.getOutputStream());
         }
         catch (IOException ex) {
+            System.out.println("[client] create socket failed");
             ex.printStackTrace();
         }
     }
@@ -33,6 +34,7 @@ public class Client {
         }
 
         try {
+            toServer.writeUTF("LOGIN");
             toServer.writeUTF(account);
             toServer.writeUTF(password);
             

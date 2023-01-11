@@ -1,11 +1,17 @@
 package edu.rihong.UI;
 
 import javax.swing.*;
+
+import edu.rihong.App;
+
 import java.awt.*;
 import java.awt.event.*;
 
 public class UIlogin extends JFrame implements ActionListener {
-    public UIlogin() {
+    private App app;
+
+    public UIlogin(App app) {
+        this.app = app;
         createUI();
     }
 
@@ -75,6 +81,8 @@ public class UIlogin extends JFrame implements ActionListener {
 
         System.out.println(account);
         System.out.println(password);
+
+        app.networkClient.postLogin(account, password);
     }
 
     JLabel labelAccount;
