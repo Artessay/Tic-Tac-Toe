@@ -13,7 +13,7 @@ public class UIlogin extends JFrame implements ActionListener {
         //Creating the Frame
         // JFrame.setDefaultLookAndFeelDecorated(true);
         this.setTitle("Art Login");
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setIconImage(UI.icon);
         
         // Set Frame Position and Size

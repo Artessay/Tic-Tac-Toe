@@ -41,8 +41,6 @@ public class UI {
 
         // Text Area at the Center
         JTextArea ta = new JTextArea();
-        Canvas canvas = new Canvas();
-        MediaPlayerFac
 
         //Adding Components to the frame.
         frame.getContentPane().add(BorderLayout.EAST, panel);
