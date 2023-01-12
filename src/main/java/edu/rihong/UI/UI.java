@@ -3,6 +3,7 @@ package edu.rihong.UI;
 import javax.swing.*;
 
 import edu.rihong.App;
+import edu.rihong.Game.GamePanel;
 
 import java.awt.*;
 
@@ -32,16 +33,6 @@ public class UI {
         int screenWidth  = (int)screenSize.getWidth();
         int screenHeight = (int)screenSize.getHeight();
 
-        //Creating the MenuBar and adding components
-        JMenuBar menu_bar = new JMenuBar();
-        JMenu m1 = new JMenu("FILE");
-        JMenu m2 = new JMenu("Help");
-        menu_bar.add(m1);
-        menu_bar.add(m2);
-        JMenuItem m11 = new JMenuItem("Open");
-        JMenuItem m12 = new JMenuItem("Save as");
-        m1.add(m11);
-        m1.add(m12);
 
         
         JLabel background = new JLabel(SwingUtil.createAutoAdjustIcon(new ImageIcon("img/spring.png").getImage()));
@@ -110,11 +101,48 @@ public class UI {
         chatPanel.add(send);
         // chatPanel.add(reset);
 
+        JPanel gamePanel = new GamePanel();
+        container.add(gamePanel);
+
         // Text Area at the Center
         // JTextArea ta = new JTextArea();
 
-        //Adding Components to the frame.
+        
+        //Creating the MenuBar and adding components
+        JMenuBar menu_bar = new JMenuBar();
+
+        JMenu m1 = new JMenu("FILE");
+        JMenuItem m11 = new JMenuItem("Open");
+        JMenuItem m12 = new JMenuItem("Save as");
+        m1.add(m11);
+        m1.add(m12);
+        menu_bar.add(m1);
+
+        JMenu m2 = new JMenu("Help");
+        menu_bar.add(m2);
+
+        JMenu m3 = new JMenu("Account");
+        JMenuItem m31 = new JMenuItem("Sign in");
+        m31.addActionListener(e -> {
+            new UIlogin(frame, app);
+            headPhoto.setIcon(updateFace());
+            userNameLabel.setText(app.user.getName());
+            frame.repaint();
+        });
+        JMenuItem m32 = new JMenuItem("Sign up");
+        m32.addActionListener(e -> {
+            new UIregister(frame, app);
+            headPhoto.setIcon(updateFace());
+            userNameLabel.setText(app.user.getName());
+            frame.repaint();
+        });
+        m3.add(m31);
+        m3.add(m32);
+        menu_bar.add(m3);
+        
         frame.setJMenuBar(menu_bar);
+
+        //Adding Components to the frame.
         // panel.add(BorderLayout.EAST, chatPanel);
         // panel.add(BorderLayout.NORTH, background);
         // panel.add(BorderLayout.CENTER, ta);
