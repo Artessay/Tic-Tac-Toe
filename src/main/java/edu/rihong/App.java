@@ -4,7 +4,7 @@ import edu.rihong.Model.User;
 import edu.rihong.NET.Client;
 import edu.rihong.NET.Server;
 import edu.rihong.UI.UI;
-import edu.rihong.UI.UIlogin;
+import edu.rihong.UI.UIregister;
 
 /**
  * Hello world!
@@ -12,12 +12,12 @@ import edu.rihong.UI.UIlogin;
  */
 public class App 
 {
-    public User userInformation;
+    public User user;
 
     public Client networkClient;
 
     public App() {
-        userInformation = new User();
+        user = new User();
         networkClient = new Client();
     }
 
@@ -28,6 +28,7 @@ public class App
 
         App app = new App();
         new UI(app);
+        UIregister registerUI = new UIregister(app);
         // UIlogin loginUI = new UIlogin(app);
         System.out.println( "Goodbye ZJUer!" );
     }

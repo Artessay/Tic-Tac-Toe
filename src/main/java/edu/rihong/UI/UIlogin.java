@@ -1,11 +1,10 @@
 package edu.rihong.UI;
 
-import javax.swing.*;
-
 import edu.rihong.App;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
 
 public class UIlogin extends JDialog implements ActionListener {
     private App app;
@@ -62,7 +61,7 @@ public class UIlogin extends JDialog implements ActionListener {
         
         inputTextPassword = new JPasswordField();
         inputTextPassword.setBounds((frameWidth - 400)/2 + 50, (frameHeight - 50)/2 + 95, 400, 40);
-        inputTextPassword.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20));;
+        inputTextPassword.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20));
         container.add(inputTextPassword);
 
         JButton buttonLogin = new JButton();
@@ -88,12 +87,12 @@ public class UIlogin extends JDialog implements ActionListener {
         System.out.println(account);
         System.out.println(password);
 
-        boolean ret = app.networkClient.postLogin(account, password, app.userInformation);
+        boolean ret = app.networkClient.postLogin(account, password, app.user);
         if (ret) {
             System.out.println("Login success");
             // this.setVisible(false);
             // notifyAll();
-            System.out.println("login: " + app.userInformation.getName());
+            System.out.println("login: " + app.user.getName());
             this.dispose();
         } 
         else {

@@ -42,17 +42,47 @@ public class Client {
         }
     }
 
+    public boolean postRegister(String account, String password, User user) {
+        if (account.equals("") || password.equals("")) {
+            return false;
+        }
+
+        try {
+            // System.out.println("[client] Begin Transfer");
+            toServer.writeUTF("LOGIN");
+            toServer.writeUTF(account);
+            toServer.writeUTF(password);
+            // System.out.println("[client] End Transfer");
+            
+            int state = fromServer.readInt();
+            if (state == Protocol.LOGIN_SUCCESS.ordinal()) {
+                User readUser = (User)objectInputStream.readObject();
+                
+                user.deepCopy(readUser);
+                
+                return true;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Program Error, class not found");
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
     public boolean postLogin(String account, String password, User user) {
         if (account.equals("") || password.equals("")) {
             return false;
         }
 
         try {
-            System.out.println("[client] Begin Transfer");
+            // System.out.println("[client] Begin Transfer");
             toServer.writeUTF("LOGIN");
             toServer.writeUTF(account);
             toServer.writeUTF(password);
-            System.out.println("[client] End Transfer");
+            // System.out.println("[client] End Transfer");
             
             int state = fromServer.readInt();
             if (state == Protocol.LOGIN_SUCCESS.ordinal()) {

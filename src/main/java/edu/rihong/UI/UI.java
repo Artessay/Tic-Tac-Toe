@@ -50,7 +50,7 @@ public class UI {
         container.add(background);
 
         ImageIcon face;
-        if (app.userInformation.getGender() == 'M') {
+        if (app.user.getGender() == 'M') {
             face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/default_avatar_boy.png").getImage());
         } else {
             face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/default_avatar_girl.png").getImage());
@@ -59,7 +59,7 @@ public class UI {
         headPhoto.setBounds((int)(0.85 * screenWidth), (int)(0.15 * screenHeight), (int)(0.15 * screenWidth), (int)(0.15 * screenWidth));
         container.add(headPhoto);
 
-        JLabel userNameLabel = new JLabel(app.userInformation.getName());
+        JLabel userNameLabel = new JLabel(app.user.getName());
         userNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
         userNameLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 28));
         userNameLabel.setBounds((int)(0.85 * screenWidth), (int)(0.4 * screenHeight), (int)(0.15 * screenWidth), (int)(0.1 * screenHeight));
@@ -76,8 +76,8 @@ public class UI {
         // buttonLogin.setContentAreaFilled(false);
         buttonLogin.addActionListener(e -> {
             new UIlogin(frame, app);
-            System.out.println(app.userInformation.getName());
-            userNameLabel.setText(app.userInformation.getName());
+            System.out.println(app.user.getName());
+            userNameLabel.setText(app.user.getName());
             userNameLabel.repaint();
         });
         container.add(buttonLogin);
@@ -91,12 +91,12 @@ public class UI {
         buttonRegister.setBackground(new Color(206, 248, 185));
         // buttonRegister.setOpaque(false);
         // buttonRegister.setContentAreaFilled(false);
-        // buttonRegister.addActionListener(e -> {
-        //     // new UIlogin(frame, app);
-        //     // System.out.println(app.userInformation.getName());
-        //     // userNameLabel.setText(app.userInformation.getName());
-        //     // userNameLabel.repaint();
-        // });
+        buttonRegister.addActionListener(e -> {
+            new UIregister(frame, app);
+            // System.out.println(app.user.getName());
+            // userNameLabel.setText(app.user.getName());
+            // userNameLabel.repaint();
+        });
         container.add(buttonRegister);
 
         // JTextPane chatTextPane = new JTextPane();
