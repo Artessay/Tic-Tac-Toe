@@ -65,6 +65,7 @@ public class Database {
                 }
 
                 if (passward.equals(passWord)) {
+                    user.loginState = true;
                     user.setAccount(account);
                     user.setName(userName);
                     user.setGender(gender.equals("M") ? 'M' : 'F');

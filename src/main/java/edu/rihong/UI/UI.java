@@ -21,6 +21,12 @@ public class UI {
         JFrame frame = new JFrame("Art Room");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        frame.setLayout(null);
+
+        Container container = frame.getContentPane();
+
+        // JPanel panel = new JPanel();
+        // panel.setLayout(new BorderLayout());
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth  = (int)screenSize.getWidth();
@@ -39,27 +45,55 @@ public class UI {
 
         
         JLabel background = new JLabel(SwingUtil.createAutoAdjustIcon(new ImageIcon("img/spring.png").getImage()));
+        // background.setPreferredSize(new Dimension(screenWidth, (int)(screenHeight * 0.15)));
+        background.setBounds(0, 0, screenWidth, (int)(screenHeight * 0.15));
+        container.add(background);
 
-        //Creating the panel at bottom and adding components
-        JPanel panel = new JPanel(); // the panel is not visible in output
+        ImageIcon face;
+        if (app.userInformation.getGender() == 'M') {
+            face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/default_avatar_boy.png").getImage());
+        } else {
+            face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/default_avatar_girl.png").getImage());
+        }
+        JLabel headPhoto = new JLabel(face);
+        headPhoto.setBounds((int)(0.85 * screenWidth), (int)(0.15 * screenHeight), (int)(0.15 * screenWidth), (int)(0.15 * screenWidth));
+        container.add(headPhoto);
+
+        JLabel userNameLabel = new JLabel(app.userInformation.getName());
+        userNameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        userNameLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 28));
+        userNameLabel.setBounds((int)(0.85 * screenWidth), (int)(0.4 * screenHeight), (int)(0.15 * screenWidth), (int)(0.1 * screenHeight));
+        container.add(userNameLabel);
+
+        // JTextPane chatTextPane = new JTextPane();
+        // JScrollPane chatPane = new JScrollPane(chatTextPane);
+
+        //Creating the chatPanel at bottom and adding components
+        JPanel chatPanel = new JPanel(); // the chatPanel is not visible in output
+        
         JLabel label = new JLabel("Enter Comment");
         JTextField textField = new JTextField(10); // accepts up to 10 characters
         JButton send = new JButton("Send");
         // JButton reset = new JButton("Reset");
-        panel.add(label); // Components Added using Flow Layout
-        panel.add(textField);
-        panel.add(send);
-        // panel.add(reset);
+        
+        // chatPanel.add(chatPane);
+        chatPanel.add(label); // Components Added using Flow Layout
+        chatPanel.add(textField);
+        chatPanel.add(send);
+        // chatPanel.add(reset);
 
         // Text Area at the Center
         JTextArea ta = new JTextArea();
 
         //Adding Components to the frame.
         frame.setJMenuBar(menu_bar);
-        frame.getContentPane().add(BorderLayout.EAST, panel);
-        frame.getContentPane().add(BorderLayout.NORTH, background);
-        background.setPreferredSize(new Dimension(screenWidth, (int)(screenHeight * 0.15)));
-        frame.getContentPane().add(BorderLayout.CENTER, ta);
+        // panel.add(BorderLayout.EAST, chatPanel);
+        // panel.add(BorderLayout.NORTH, background);
+        // panel.add(BorderLayout.CENTER, ta);
+        // frame.add(panel);
+        // frame.getContentPane().add(BorderLayout.EAST, chatPanel);
+        // frame.getContentPane().add(BorderLayout.NORTH, background);
+        // frame.getContentPane().add(BorderLayout.CENTER, ta);
         frame.setVisible(true);
     }
 }

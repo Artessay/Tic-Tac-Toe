@@ -15,7 +15,10 @@ public class User implements Serializable {
 
     public User() {
         loginState = false;
+        account = "";
+        name = "Anonymous";
         gender = 'M';
+        password = "";
     }
 
     public String getAccount() {
