@@ -1,14 +1,15 @@
 package edu.rihong.NET;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+
+import edu.rihong.Model.User;
 
 public class Client {
     private Socket socket;
     private DataInputStream fromServer;
     private DataOutputStream toServer;
+    private ObjectInputStream objectInputStream;
 
     public Client() {
         // create connection
@@ -21,6 +22,8 @@ public class Client {
 
             // create a output stream to send data to the server
             toServer = new DataOutputStream(socket.getOutputStream());
+
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
         }
         catch (IOException ex) {
             System.out.println("[client] create socket failed");
@@ -28,7 +31,18 @@ public class Client {
         }
     }
 
-    public boolean postLogin(String account, String password) {
+    public void finalize() {
+        try {
+            fromServer.close();
+            toServer.close();
+            objectInputStream.close();
+        } catch (IOException e) {
+            // Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public boolean postLogin(String account, String password, User user) {
         if (account.equals("") || password.equals("")) {
             return false;
         }
@@ -37,13 +51,18 @@ public class Client {
             toServer.writeUTF("LOGIN");
             toServer.writeUTF(account);
             toServer.writeUTF(password);
+            System.out.println("[client] write");
             
             int state = fromServer.readInt();
             if (state == Protocol.LOGIN_SUCCESS.ordinal()) {
-                ;
+                user = (User)objectInputStream.readObject();
+                return true;
             }
         } catch (IOException e) {
-            // TODO: handle exception
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Program Error, class not found");
+            e.printStackTrace();
         }
 
         return false;

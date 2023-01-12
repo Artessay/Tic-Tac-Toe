@@ -36,7 +36,7 @@ public class UI {
         //Creating the panel at bottom and adding components
         JPanel panel = new JPanel(); // the panel is not visible in output
         JLabel label = new JLabel("Enter Comment");
-        JTextField textField = new JTextField(10); // accepts upto 10 characters
+        JTextField textField = new JTextField(10); // accepts up to 10 characters
         JButton send = new JButton("Send");
         // JButton reset = new JButton("Reset");
         panel.add(label); // Components Added using Flow Layout

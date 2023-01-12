@@ -3,10 +3,12 @@ package edu.rihong.NET;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import edu.rihong.DB.Database;
+import edu.rihong.Model.User;
 
 class HandleAClient implements Runnable {
     private Socket socket;  // A connected socket
@@ -21,6 +23,7 @@ class HandleAClient implements Runnable {
         try {
             DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
             DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
+            ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
 
             String method = inputFromClient.readUTF();
             switch (method) {
@@ -28,11 +31,15 @@ class HandleAClient implements Runnable {
                     String account = inputFromClient.readUTF();
                     String password = inputFromClient.readUTF();
                     
-                    String [] username = new String[1];
-                    Boolean ret = database.login(account, password, username);
+                    User user = new User();
+                    Boolean ret = database.login(account, password, user);
+                    System.out.println("USER: " + user.account + " " + user.name + " " + user.gender + " ");
                     if (ret == true) {
                         outputToClient.writeInt(Protocol.LOGIN_SUCCESS.ordinal());
-                        
+                        objectOutput.writeObject(user);
+                    }
+                    else {
+                        outputToClient.writeInt(Protocol.LOGIN_FAILED.ordinal());
                     }
                     break;
             
@@ -64,7 +71,7 @@ public class Server extends Thread {
                 Socket socket = serverSocket.accept();
                 
                 // ++clientNumber;
-                System.out.println("[server] connected ");
+                System.out.println("[server] connected with " + socket.getPort());
                 
                 new Thread(new HandleAClient(socket, database)).start();
             }

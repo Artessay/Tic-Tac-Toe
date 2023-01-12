@@ -3,6 +3,8 @@ package edu.rihong.DB;
 import java.sql.*;
 // import com.mysql.jdbc.*;
 
+import edu.rihong.Model.User;
+
 public class Database {
     private Statement statement;
 
@@ -26,10 +28,15 @@ public class Database {
         }
     }
 
-    public boolean register(String account, String username, String passward) {
+    public boolean register(String account, String username, char gender, String passward) {
+        if (gender != 'M' && gender != 'F') {
+            System.out.println("Program Error, gender should be M or F");
+            return false;
+        }
+
         try {
             String queryString = "insert user values ('" +
-                account + "', '" + username + "', '" + passward + "')";
+                account + "', '" + username + "', '" + gender + "', '"  + passward + "')";
             
             int ret = statement.executeUpdate(queryString);
             return ret == 1;
@@ -39,25 +46,35 @@ public class Database {
         }
     }
 
-    public boolean login(String account, String passward, String[] name) {
+    public boolean login(String account, String passward, User user) {
         try {
-            String queryString = "select name, password " + 
+            String queryString = "select name, gender, password " + 
                 "from user where uid = " + account;
             
             ResultSet resultSet = statement.executeQuery(queryString);
 
             if (resultSet.next()) {
                 String userName = resultSet.getString(1);
-                String passWord = resultSet.getString(2);
+                String gender = resultSet.getString(2);
+                String passWord = resultSet.getString(3);
+                System.out.println("database: " + " " + userName + " " + gender + " ");
 
-                if (name == null) {
-                    System.out.println("Program Error, null pointer for Database.login.name");
+                if (user == null) {
+                    System.out.println("Program Error, null pointer for Database.login.user");
                     return false;
                 }
 
-                name[0] = userName;
+                if (passward.equals(passWord)) {
+                    user.setAccount(account);
+                    user.setName(userName);
+                    user.setGender(gender.equals("M") ? 'M' : 'F');
+                    user.setPassword(passWord);
 
-                return passward.equals(passWord);
+                    return true;
+                } 
+                else {
+                    return false;
+                }
             } else {
                 System.out.println("account not found");
                 return false;

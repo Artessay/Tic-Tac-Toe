@@ -82,7 +82,15 @@ public class UIlogin extends JFrame implements ActionListener {
         System.out.println(account);
         System.out.println(password);
 
-        app.networkClient.postLogin(account, password);
+        boolean ret = app.networkClient.postLogin(account, password, app.userInformation);
+        if (ret) {
+            System.out.println("Login success");
+            // this.setVisible(false);
+            this.dispose();
+        } 
+        else {
+            System.out.println("Account or password is Wrong");;
+        }
     }
 
     JLabel labelAccount;
