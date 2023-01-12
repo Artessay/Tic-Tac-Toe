@@ -18,15 +18,15 @@ public class Client {
             // Create a socket to connect to the server
             socket = new Socket("localhost", 5842);
 
-            // Create an input stream to receive data from the server
-            fromServer = new DataInputStream(socket.getInputStream());
-
             // create a output stream to send data to the server
             toServer = new DataOutputStream(socket.getOutputStream());
 
-            objectInputStream = new ObjectInputStream(socket.getInputStream());
+            // Create an input stream to receive data from the server
+            fromServer = new DataInputStream(socket.getInputStream());
 
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
+
+            objectInputStream = new ObjectInputStream(socket.getInputStream());
         }
         catch (IOException ex) {
             System.out.println("[client] create socket failed");

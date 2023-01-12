@@ -49,16 +49,7 @@ public class UI {
         background.setBounds(0, 0, screenWidth, (int)(screenHeight * 0.15));
         container.add(background);
 
-        ImageIcon face;
-        if (app.user.loginState == false) {
-            //avatar_anonymous.png
-            face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/avatar_anonymous.png").getImage());
-        } else if (app.user.getGender() == 'M') {
-            face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/default_avatar_boy.png").getImage());
-        } else {
-            face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/default_avatar_girl.png").getImage());
-        }
-        JLabel headPhoto = new JLabel(face);
+        JLabel headPhoto = new JLabel(updateFace());
         headPhoto.setBounds((int)(0.85 * screenWidth), (int)(0.15 * screenHeight), (int)(0.15 * screenWidth), (int)(0.15 * screenWidth));
         container.add(headPhoto);
 
@@ -79,9 +70,9 @@ public class UI {
         // buttonLogin.setContentAreaFilled(false);
         buttonLogin.addActionListener(e -> {
             new UIlogin(frame, app);
-            System.out.println(app.user.getName());
+            headPhoto.setIcon(updateFace());
             userNameLabel.setText(app.user.getName());
-            userNameLabel.repaint();
+            frame.repaint();
         });
         container.add(buttonLogin);
 
@@ -96,9 +87,9 @@ public class UI {
         // buttonRegister.setContentAreaFilled(false);
         buttonRegister.addActionListener(e -> {
             new UIregister(frame, app);
-            // System.out.println(app.user.getName());
-            // userNameLabel.setText(app.user.getName());
-            // userNameLabel.repaint();
+            headPhoto.setIcon(updateFace());
+            userNameLabel.setText(app.user.getName());
+            frame.repaint();
         });
         container.add(buttonRegister);
 
@@ -132,6 +123,19 @@ public class UI {
         // frame.getContentPane().add(BorderLayout.NORTH, background);
         // frame.getContentPane().add(BorderLayout.CENTER, ta);
         frame.setVisible(true);
+    }
+
+    private ImageIcon updateFace() {
+        ImageIcon face;
+        if (app.user.loginState == false) {
+            //avatar_anonymous.png
+            face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/avatar_anonymous.png").getImage());
+        } else if (app.user.getGender() == 'M') {
+            face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/default_avatar_boy.png").getImage());
+        } else {
+            face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/default_avatar_girl.png").getImage());
+        }
+        return face;
     }
 
     private JButton buttonLogin, buttonRegister;

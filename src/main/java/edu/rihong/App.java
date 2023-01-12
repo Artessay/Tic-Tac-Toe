@@ -4,7 +4,6 @@ import edu.rihong.Model.User;
 import edu.rihong.NET.Client;
 import edu.rihong.NET.Server;
 import edu.rihong.UI.UI;
-import edu.rihong.UI.UIregister;
 
 /**
  * Hello world!

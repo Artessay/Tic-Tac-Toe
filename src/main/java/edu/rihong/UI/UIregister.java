@@ -157,6 +157,7 @@ public class UIregister extends JDialog implements ActionListener  {
             app.user.setPassword(password);
             boolean ret = app.networkClient.postRegister(app.user);
             if (ret) {
+                app.user.loginState = true;
                 JOptionPane.showConfirmDialog(null, "Register Success", "PROMPT", JOptionPane.DEFAULT_OPTION);
                 this.dispose();
             } 
