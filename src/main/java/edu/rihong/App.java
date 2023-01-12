@@ -27,8 +27,8 @@ public class App
         new Thread(new Server()).start();
 
         App app = new App();
-        // new UI(app);
-        UIlogin loginUI = new UIlogin(app);
+        new UI(app);
+        // UIlogin loginUI = new UIlogin(app);
         System.out.println( "Goodbye ZJUer!" );
     }
 }
