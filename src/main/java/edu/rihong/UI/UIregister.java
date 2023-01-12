@@ -134,21 +134,36 @@ public class UIregister extends JDialog implements ActionListener  {
             System.out.println("Register");
 
             String account = inputTextAccount.getText().trim();
-            String username = inputTextUsername.getText().trim();
-            String password = inputTextPassword.getText().trim();
+            if (account.equals("")) {
+                JOptionPane.showConfirmDialog(null, "Account can't be empty", "ERROR", JOptionPane.DEFAULT_OPTION);
+                return;
+            }
 
-            boolean ret = app.networkClient.postLogin(account, password, app.user);
+            String username = inputTextUsername.getText().trim();
+            if (username.equals("")) {
+                JOptionPane.showConfirmDialog(null, "Username can't be empty", "ERROR", JOptionPane.DEFAULT_OPTION);
+                return;
+            }
+
+            String password = inputTextPassword.getText().trim();
+            if (password.equals("")) {
+                JOptionPane.showConfirmDialog(null, "Password can't be empty", "ERROR", JOptionPane.DEFAULT_OPTION);
+                return;
+            }
+
+            app.user.setAccount(account);
+            app.user.setName(username);
+            app.user.setGender(inputGender);
+            app.user.setPassword(password);
+            boolean ret = app.networkClient.postRegister(app.user);
             if (ret) {
-                System.out.println("Login success");
-                // this.setVisible(false);
-                // notifyAll();
-                System.out.println("login: " + app.user.getName());
+                JOptionPane.showConfirmDialog(null, "Register Success", "PROMPT", JOptionPane.DEFAULT_OPTION);
                 this.dispose();
             } 
             else {
                 // new MessageDialog("Account or password is Wrong");
-                JOptionPane.showConfirmDialog(null, "Account or password is Wrong", "ERROR", JOptionPane.DEFAULT_OPTION);
-                System.out.println("Account or password is Wrong");;
+                JOptionPane.showConfirmDialog(null, "Register Failed", "ERROR", JOptionPane.DEFAULT_OPTION);
+                // System.out.println("Account or password is Wrong");
             }
         }
         

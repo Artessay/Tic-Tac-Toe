@@ -50,7 +50,10 @@ public class UI {
         container.add(background);
 
         ImageIcon face;
-        if (app.user.getGender() == 'M') {
+        if (app.user.loginState == false) {
+            //avatar_anonymous.png
+            face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/avatar_anonymous.png").getImage());
+        } else if (app.user.getGender() == 'M') {
             face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/default_avatar_boy.png").getImage());
         } else {
             face = SwingUtil.createAutoAdjustIcon(new ImageIcon("img/default_avatar_girl.png").getImage());

@@ -10,6 +10,7 @@ public class Client {
     private DataInputStream fromServer;
     private DataOutputStream toServer;
     private ObjectInputStream objectInputStream;
+    private ObjectOutputStream objectOutputStream;
 
     public Client() {
         // create connection
@@ -24,6 +25,8 @@ public class Client {
             toServer = new DataOutputStream(socket.getOutputStream());
 
             objectInputStream = new ObjectInputStream(socket.getInputStream());
+
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         }
         catch (IOException ex) {
             System.out.println("[client] create socket failed");
@@ -36,36 +39,29 @@ public class Client {
             fromServer.close();
             toServer.close();
             objectInputStream.close();
+            objectOutputStream.close();
         } catch (IOException e) {
             // Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    public boolean postRegister(String account, String password, User user) {
-        if (account.equals("") || password.equals("")) {
+    public boolean postRegister(User user) {
+        if (user.getAccount().equals("") || user.getName().equals("") || user.getPassword().equals("")) {
             return false;
         }
 
         try {
             // System.out.println("[client] Begin Transfer");
-            toServer.writeUTF("LOGIN");
-            toServer.writeUTF(account);
-            toServer.writeUTF(password);
+            toServer.writeUTF("REGISTER");
+            objectOutputStream.writeObject(user);
             // System.out.println("[client] End Transfer");
             
             int state = fromServer.readInt();
-            if (state == Protocol.LOGIN_SUCCESS.ordinal()) {
-                User readUser = (User)objectInputStream.readObject();
-                
-                user.deepCopy(readUser);
-                
+            if (state == Protocol.REGISTER_SUCCESS.ordinal()) {
                 return true;
             }
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            System.out.println("Program Error, class not found");
             e.printStackTrace();
         }
 

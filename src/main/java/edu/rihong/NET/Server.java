@@ -3,6 +3,7 @@ package edu.rihong.NET;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -23,34 +24,48 @@ class HandleAClient implements Runnable {
         try {
             DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
             DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
+            ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
 
             while (true) {
                 String method = inputFromClient.readUTF();
+                User user;
                 switch (method) {
                     case "LOGIN":
                         String account = inputFromClient.readUTF();
                         String password = inputFromClient.readUTF();
                         
-                        User user = new User();
-                        Boolean ret = database.login(account, password, user);
-                        
-                        if (ret == true) {
+                        user = new User();
+
+                        if (database.login(account, password, user)) {
                             outputToClient.writeInt(Protocol.LOGIN_SUCCESS.ordinal());
                             objectOutput.writeObject(user);
-                        }
-                        else {
+                        } else {
                             outputToClient.writeInt(Protocol.LOGIN_FAILED.ordinal());
                         }
                         break;
-                
+
+                    case "REGISTER":
+                        user = (User)objectInput.readObject();
+
+                        if (database.register(user)) {
+                            outputToClient.writeInt(Protocol.REGISTER_SUCCESS.ordinal());
+                        } else {
+                            outputToClient.writeInt(Protocol.REGISTER_FAILED.ordinal());
+                        }
+                        break;
+
                     default:
+                        System.out.println("[server] Unrecogized method: " + method);
                         break;
                 }
             }
             
         } catch(IOException ex) {
             ex.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // Auto-generated catch block
+            e.printStackTrace();
         }
     }
 }
@@ -68,7 +83,7 @@ public class Server extends Thread {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(5842);
-            System.out.println("Server Socket start at 5842");
+            System.out.println("[server] Socket start at 5842");
 
             while (true) {
                 Socket socket = serverSocket.accept();

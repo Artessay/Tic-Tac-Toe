@@ -23,12 +23,13 @@ public class App
 
     public static void main( String[] args )
     {
-        System.out.println( "Hello ZJUer!" );
+        // @debug
         new Thread(new Server()).start();
 
+        System.out.println( "Hello ZJUer!" );
         App app = new App();
         new UI(app);
-        UIregister registerUI = new UIregister(app);
+        // UIregister registerUI = new UIregister(app);
         // UIlogin loginUI = new UIlogin(app);
         System.out.println( "Goodbye ZJUer!" );
     }

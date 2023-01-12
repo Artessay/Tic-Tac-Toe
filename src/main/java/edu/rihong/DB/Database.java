@@ -12,7 +12,7 @@ public class Database {
         try {
             // Load the JDBC driver
             Class.forName("com.mysql.cj.jdbc.Driver");
-            System.out.println("Driver loaded");
+            System.out.println("[server] Driver loaded");
 
             // Establish a connection
             Connection connection = DriverManager.getConnection(
@@ -20,7 +20,7 @@ public class Database {
                 "root", 
                 "qrh"
             );
-            System.out.println("Database connected");
+            System.out.println("[server] Database connected");
 
             statement = connection.createStatement();
         } catch (Exception e) {
@@ -30,7 +30,7 @@ public class Database {
 
     public boolean register(String account, String username, char gender, String passward) {
         if (gender != 'M' && gender != 'F') {
-            System.out.println("Program Error, gender should be M or F");
+            System.out.println("[server] Program Error, gender should be M or F");
             return false;
         }
 
@@ -46,6 +46,10 @@ public class Database {
         }
     }
 
+    public boolean register(User user) {
+        return register(user.getAccount(), user.getName(), user.getGender(), user.getPassword());
+    }
+
     public boolean login(String account, String passward, User user) {
         try {
             String queryString = "select name, gender, password " + 
@@ -57,10 +61,10 @@ public class Database {
                 String userName = resultSet.getString(1);
                 String gender = resultSet.getString(2);
                 String passWord = resultSet.getString(3);
-                System.out.println("database: " + " " + userName + " " + gender + " ");
+                // System.out.println("database: " + " " + userName + " " + gender + " ");
 
                 if (user == null) {
-                    System.out.println("Program Error, null pointer for Database.login.user");
+                    System.out.println("[server] Program Error, null pointer for Database.login.user");
                     return false;
                 }
 
@@ -77,7 +81,7 @@ public class Database {
                     return false;
                 }
             } else {
-                System.out.println("account not found");
+                System.out.println("[server] account not found");
                 return false;
             }
         } catch (Exception e) {

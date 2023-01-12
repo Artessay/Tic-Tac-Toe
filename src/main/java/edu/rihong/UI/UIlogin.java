@@ -84,15 +84,15 @@ public class UIlogin extends JDialog implements ActionListener {
         String account = inputTextAccount.getText().trim();
         String password = new String(inputTextPassword.getPassword());
 
-        System.out.println(account);
-        System.out.println(password);
+        // System.out.println(account);
+        // System.out.println(password);
 
         boolean ret = app.networkClient.postLogin(account, password, app.user);
         if (ret) {
-            System.out.println("Login success");
+            // System.out.println("Login success");
             // this.setVisible(false);
             // notifyAll();
-            System.out.println("login: " + app.user.getName());
+            // System.out.println("login: " + app.user.getName());
             this.dispose();
         } 
         else {
