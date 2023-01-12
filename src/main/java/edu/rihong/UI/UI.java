@@ -22,6 +22,10 @@ public class UI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth  = (int)screenSize.getWidth();
+        int screenHeight = (int)screenSize.getHeight();
+
         //Creating the MenuBar and adding components
         JMenuBar menu_bar = new JMenuBar();
         JMenu m1 = new JMenu("FILE");
@@ -32,6 +36,9 @@ public class UI {
         JMenuItem m12 = new JMenuItem("Save as");
         m1.add(m11);
         m1.add(m12);
+
+        
+        JLabel background = new JLabel(SwingUtil.createAutoAdjustIcon(new ImageIcon("img/spring.png").getImage()));
 
         //Creating the panel at bottom and adding components
         JPanel panel = new JPanel(); // the panel is not visible in output
@@ -48,8 +55,10 @@ public class UI {
         JTextArea ta = new JTextArea();
 
         //Adding Components to the frame.
+        frame.setJMenuBar(menu_bar);
         frame.getContentPane().add(BorderLayout.EAST, panel);
-        frame.getContentPane().add(BorderLayout.NORTH, menu_bar);
+        frame.getContentPane().add(BorderLayout.NORTH, background);
+        background.setPreferredSize(new Dimension(screenWidth, (int)(screenHeight * 0.15)));
         frame.getContentPane().add(BorderLayout.CENTER, ta);
         frame.setVisible(true);
     }
