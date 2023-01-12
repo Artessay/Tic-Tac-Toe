@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
