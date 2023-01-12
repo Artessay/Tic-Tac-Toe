@@ -65,6 +65,21 @@ public class UI {
         userNameLabel.setBounds((int)(0.85 * screenWidth), (int)(0.4 * screenHeight), (int)(0.15 * screenWidth), (int)(0.1 * screenHeight));
         container.add(userNameLabel);
 
+        JButton buttonLogin = new JButton();
+        buttonLogin.setText("Sign in");
+        buttonLogin.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20));
+        buttonLogin.setBounds(screenWidth - 200, screenHeight - 150, 200, 40);
+        buttonLogin.setFocusPainted(false);
+        buttonLogin.setForeground(Color.WHITE);
+        buttonLogin.setBackground(Color.CYAN);
+        buttonLogin.addActionListener(e -> {
+            new UIlogin(frame, app);
+            System.out.println(app.userInformation.getName());
+            userNameLabel.setText(app.userInformation.getName());
+            userNameLabel.repaint();
+        });
+        container.add(buttonLogin);
+
         // JTextPane chatTextPane = new JTextPane();
         // JScrollPane chatPane = new JScrollPane(chatTextPane);
 
@@ -83,7 +98,7 @@ public class UI {
         // chatPanel.add(reset);
 
         // Text Area at the Center
-        JTextArea ta = new JTextArea();
+        // JTextArea ta = new JTextArea();
 
         //Adding Components to the frame.
         frame.setJMenuBar(menu_bar);

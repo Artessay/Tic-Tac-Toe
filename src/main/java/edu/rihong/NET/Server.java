@@ -25,27 +25,30 @@ class HandleAClient implements Runnable {
             DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
             ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
 
-            String method = inputFromClient.readUTF();
-            switch (method) {
-                case "LOGIN":
-                    String account = inputFromClient.readUTF();
-                    String password = inputFromClient.readUTF();
-                    
-                    User user = new User();
-                    Boolean ret = database.login(account, password, user);
-                    System.out.println("USER: " + user.account + " " + user.name + " " + user.gender + " ");
-                    if (ret == true) {
-                        outputToClient.writeInt(Protocol.LOGIN_SUCCESS.ordinal());
-                        objectOutput.writeObject(user);
-                    }
-                    else {
-                        outputToClient.writeInt(Protocol.LOGIN_FAILED.ordinal());
-                    }
-                    break;
-            
-                default:
-                    break;
+            while (true) {
+                String method = inputFromClient.readUTF();
+                switch (method) {
+                    case "LOGIN":
+                        String account = inputFromClient.readUTF();
+                        String password = inputFromClient.readUTF();
+                        
+                        User user = new User();
+                        Boolean ret = database.login(account, password, user);
+                        
+                        if (ret == true) {
+                            outputToClient.writeInt(Protocol.LOGIN_SUCCESS.ordinal());
+                            objectOutput.writeObject(user);
+                        }
+                        else {
+                            outputToClient.writeInt(Protocol.LOGIN_FAILED.ordinal());
+                        }
+                        break;
+                
+                    default:
+                        break;
+                }
             }
+            
         } catch(IOException ex) {
             ex.printStackTrace();
         }

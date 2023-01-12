@@ -48,14 +48,18 @@ public class Client {
         }
 
         try {
+            System.out.println("[client] Begin Transfer");
             toServer.writeUTF("LOGIN");
             toServer.writeUTF(account);
             toServer.writeUTF(password);
-            System.out.println("[client] write");
+            System.out.println("[client] End Transfer");
             
             int state = fromServer.readInt();
             if (state == Protocol.LOGIN_SUCCESS.ordinal()) {
-                user = (User)objectInputStream.readObject();
+                User readUser = (User)objectInputStream.readObject();
+                
+                user.deepCopy(readUser);
+                
                 return true;
             }
         } catch (IOException e) {

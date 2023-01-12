@@ -5,20 +5,33 @@ import java.io.Serializable;
 public class User implements Serializable {
     public boolean loginState;
 
-    public String account;
+    private String account;
 
-    public String name;
+    private String name;
 
-    public char gender;
+    private char gender;
 
     private String password;
 
     public User() {
+        this.clean();
+    }
+    
+    /** Clean User state */
+    public void clean() {
         loginState = false;
         account = "";
         name = "Anonymous";
         gender = 'M';
         password = "";
+    }
+
+    public void deepCopy(User user) {
+        this.loginState = user.loginState;
+        this.setAccount(user.getAccount());
+        this.setName(user.getName());
+        this.setGender(user.getGender());
+        this.setPassword(user.getPassword());
     }
 
     public String getAccount() {

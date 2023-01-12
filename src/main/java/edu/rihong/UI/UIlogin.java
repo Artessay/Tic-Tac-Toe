@@ -7,10 +7,16 @@ import edu.rihong.App;
 import java.awt.*;
 import java.awt.event.*;
 
-public class UIlogin extends JFrame implements ActionListener {
+public class UIlogin extends JDialog implements ActionListener {
     private App app;
 
     public UIlogin(App app) {
+        this.app = app;
+        createUI();
+    }
+
+    public UIlogin(JFrame owner, App app) {
+        super(owner, true);
         this.app = app;
         createUI();
     }
@@ -86,9 +92,13 @@ public class UIlogin extends JFrame implements ActionListener {
         if (ret) {
             System.out.println("Login success");
             // this.setVisible(false);
+            // notifyAll();
+            System.out.println("login: " + app.userInformation.getName());
             this.dispose();
         } 
         else {
+            // new MessageDialog("Account or password is Wrong");
+            JOptionPane.showConfirmDialog(null, "Account or password is Wrong", "ERROR", JOptionPane.DEFAULT_OPTION);
             System.out.println("Account or password is Wrong");;
         }
     }
