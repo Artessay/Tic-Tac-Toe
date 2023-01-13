@@ -29,6 +29,8 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.31</version>
+      <scope>system</scope>
+      <systemPath>${pom.basedir}/lib/mysql-connector-j-8.0.31.jar</systemPath>
     </dependency>
   </dependencies>
 

@@ -1,5 +1,6 @@
 edu\rihong\NET\HandleAClient.class
 edu\rihong\UI\MessageDialog.class
+edu\rihong\Game\StartButton.class
 edu\rihong\Game\CellState.class
 edu\rihong\Game\GamePanel$1.class
 edu\rihong\Game\Cell.class
@@ -9,7 +10,6 @@ edu\rihong\UI\UI.class
 edu\rihong\NET\Client.class
 edu\rihong\UI\UIlogin.class
 edu\rihong\Game\GamePanel.class
-edu\rihong\Testc.class
 edu\rihong\App.class
 edu\rihong\NET\Server.class
 edu\rihong\UI\SwingUtil.class

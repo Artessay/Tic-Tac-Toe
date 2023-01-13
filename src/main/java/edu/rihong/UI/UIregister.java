@@ -128,10 +128,9 @@ public class UIregister extends JDialog implements ActionListener  {
             } else {
                 inputGender = 'M';
             }
-            System.out.println("gender: " + inputGender);
         }
         else if (event.getSource() instanceof JButton) {
-            System.out.println("Register");
+            // System.out.println("Register");
 
             String account = inputTextAccount.getText().trim();
             if (account.equals("")) {

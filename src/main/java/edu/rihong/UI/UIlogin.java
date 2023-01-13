@@ -82,7 +82,7 @@ public class UIlogin extends JDialog implements ActionListener {
     }
 
     public void actionPerformed(ActionEvent event) {
-        System.out.println("Login");
+        // System.out.println("Login");
 
         String account = inputTextAccount.getText().trim();
         String password = new String(inputTextPassword.getPassword());
