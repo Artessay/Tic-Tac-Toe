@@ -55,10 +55,8 @@ public class Client {
         }
 
         try {
-            // System.out.println("[client] Begin Transfer");
             toServer.writeUTF("REGISTER");
             objectOutputStream.writeObject(user);
-            // System.out.println("[client] End Transfer");
             
             int state = fromServer.readInt();
             if (state == Protocol.REGISTER_SUCCESS.ordinal()) {
@@ -77,11 +75,9 @@ public class Client {
         }
 
         try {
-            // System.out.println("[client] Begin Transfer");
             toServer.writeUTF("LOGIN");
             toServer.writeUTF(account);
             toServer.writeUTF(password);
-            // System.out.println("[client] End Transfer");
             
             int state = fromServer.readInt();
             if (state == Protocol.LOGIN_SUCCESS.ordinal()) {
