@@ -27,8 +27,8 @@ public class GamePanel extends JPanel {
    private App app;
 
    /** Constructor to setup the UI and game components */
-   public GamePanel(App app) {
-      this.app = app;
+   public GamePanel(App uapp) {
+      this.app = uapp;
       currentState = State.IDLE;
 
       // Deal with MouseEvent
@@ -65,15 +65,18 @@ public class GamePanel extends JPanel {
 
       // Setup start button
       startButton = new JButton("START");
-      startButton.setFont(new Font("OCR A Extended", Font.BOLD, 24));
+      startButton.setFont(new Font("OCR A Extended", Font.BOLD, 28));
       startButton.setFocusPainted(false);
       startButton.setForeground(new Color(239, 105, 80));
       startButton.setBackground(COLOR_BG);
       startButton.setBorderPainted(false);
       startButton.addActionListener(e -> {
-         app.networkClient.postReady(app.user.getAccount());
-         currentState = State.READY;
-         this.repaint();
+         // System.out.println("Clicked");
+         if (currentState == State.IDLE) {
+            app.networkClient.postReady(app.user.getAccount());
+            currentState = State.READY;
+            this.repaint();
+         }
       });
 
       // Setup the status bar (JLabel) to display status message
@@ -86,6 +89,7 @@ public class GamePanel extends JPanel {
       statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
 
       super.setLayout(new BorderLayout());
+      super.add(startButton, BorderLayout.CENTER);
       super.add(statusBar, BorderLayout.SOUTH);
       super.setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
             // account for statusBar in height
@@ -138,11 +142,14 @@ public class GamePanel extends JPanel {
       // Print status-bar message
       if (currentState == State.IDLE) {
          startButton.setVisible(true);
-         System.out.println("Hello");
+         statusBar.setVisible(false);
       } else if (currentState == State.READY) {
-         startButton.setVisible(false);
+         startButton.setVisible(true);
+         startButton.setText("Waiting for Player...");
+         statusBar.setVisible(false);
       } else {
          startButton.setVisible(false);
+         statusBar.setVisible(true);
          board.paint(g);  
          
          // draw status bar
