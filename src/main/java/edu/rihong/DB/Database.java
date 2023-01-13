@@ -1,11 +1,13 @@
 package edu.rihong.DB;
 
 import java.sql.*;
-// import com.mysql.jdbc.*;
 
 import edu.rihong.Model.User;
 
 public class Database {
+    private static final String MYSQL_USER = "root";
+    private static final String MYSQL_PASSWORD = "qrh";
+
     private Statement statement;
 
     public Database() {
@@ -17,8 +19,8 @@ public class Database {
             // Establish a connection
             Connection connection = DriverManager.getConnection(
                 "jdbc:mysql://localhost/cherryforum", 
-                "root", 
-                "qrh"
+                MYSQL_USER, 
+                MYSQL_PASSWORD
             );
             System.out.println("[server] Database connected");
 
