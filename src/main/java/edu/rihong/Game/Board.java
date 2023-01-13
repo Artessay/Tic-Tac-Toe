@@ -6,27 +6,22 @@ import java.awt.*;
  * The Board class models the ROWS-by-COLS game board.
  */
 public class Board {
-   // Define named constants
-   public static final int ROWS = 3;  // ROWS x COLS cells
-   public static final int COLS = 3;
-   // Define named constants for drawing
-   public static final int CANVAS_WIDTH = Cell.SIZE * COLS;  // the drawing canvas
-   public static final int CANVAS_HEIGHT = Cell.SIZE * ROWS;
-   public static final int GRID_WIDTH = 8;  // Grid-line's width
-   public static final int GRID_WIDHT_HALF = GRID_WIDTH / 2; // Grid-line's half-width
-   public static final Color COLOR_GRID = Color.LIGHT_GRAY;  // grid lines
-   public static final int Y_OFFSET = 1;  // Fine tune for better display
+   static final int ROWS = 3;
+   static final int COLS = 3;
+   
+   static final int CANVAS_WIDTH = Cell.SIZE * COLS;
+   static final int CANVAS_HEIGHT = Cell.SIZE * ROWS;
+   static final int GRID_WIDTH = 8; 
+   static final int GRID_WIDHT_HALF = GRID_WIDTH / 2;
+   static final Color COLOR_GRID = Color.LIGHT_GRAY;
+   static final int Y_OFFSET = 1;
 
-   // Define properties (package-visible)
-   /** Composes of 2D array of ROWS-by-COLS Cell instances */
    Cell[][] cells;
 
-   /** Constructor to initialize the game board */
    public Board() {
       initGame();
    }
 
-   /** Initialize the game objects (run once) */
    public void initGame() {
       cells = new Cell[ROWS][COLS]; // allocate the array
       for (int row = 0; row < ROWS; ++row) {

@@ -3,6 +3,8 @@ package edu.rihong.Model;
 import java.io.Serializable;
 
 public class User implements Serializable {
+    static final int rewardFortune = 500;
+
     public boolean loginState;
 
     private String account;
@@ -36,6 +38,14 @@ public class User implements Serializable {
         this.setGender(user.getGender());
         this.setFortune(user.getFortune());
         this.setPassword(user.getPassword());
+    }
+
+    public void increaseFortune() {
+        fortune += rewardFortune;
+    }
+
+    public void decreaseFortune() {
+        fortune -= rewardFortune;
     }
 
     public String getAccount() {

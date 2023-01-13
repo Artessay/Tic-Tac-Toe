@@ -97,4 +97,13 @@ public class Client {
 
         return false;
     }
+
+    public void postReady(String account) {
+        try {
+            toServer.writeUTF("READY");
+            toServer.writeUTF(account);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

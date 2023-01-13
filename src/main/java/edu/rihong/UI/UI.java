@@ -112,7 +112,7 @@ public class UI {
         chatPanel.add(send);
         // chatPanel.add(reset);
 
-        JPanel gamePanel = new GamePanel();
+        gamePanel = new GamePanel(app);
         container.add(gamePanel);
 
         // Text Area at the Center
@@ -179,5 +179,6 @@ public class UI {
         return face;
     }
 
+    GamePanel gamePanel;
     private JButton buttonLogin, buttonRegister;
 }
