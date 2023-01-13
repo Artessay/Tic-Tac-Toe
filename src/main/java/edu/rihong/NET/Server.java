@@ -10,6 +10,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -23,6 +25,10 @@ class HandleAClient implements Runnable {
     private Socket socket;  // A connected socket
     private Database database;
     private HashMap<String, Socket> socketMap;
+
+    private static Lock lock = new ReentrantLock();
+    private static int playerNumber = 0;
+    private static Socket waitPlayer = null;
 
     public HandleAClient(Socket socket, Database database, HashMap<String, Socket> socketMap) {
         this.socket = socket;
@@ -40,9 +46,10 @@ class HandleAClient implements Runnable {
             while (true) {
                 String method = inputFromClient.readUTF();
                 User user;
+                String account;
                 switch (method) {
                     case "LOGIN":
-                        String account = inputFromClient.readUTF();
+                        account = inputFromClient.readUTF();
                         String password = inputFromClient.readUTF();
                         
                         user = new User();
@@ -66,6 +73,33 @@ class HandleAClient implements Runnable {
                             outputToClient.writeInt(Protocol.REGISTER_FAILED.ordinal());
                         }
                         break;
+                    
+                    case "READY":
+                        account = inputFromClient.readUTF();
+                        Boolean play;
+                        Socket opponent = null;
+                        
+                        lock.lock();
+                        try {
+                            ++playerNumber;
+                            if (playerNumber % 2 == 0) {
+                                play = true;
+                                opponent = waitPlayer;
+                                waitPlayer = null;
+                            } else {
+                                play = false;
+                                waitPlayer = socket;
+                            }
+                        } finally {
+                            lock.unlock();
+                        }
+
+                        if (play) {
+                            new Thread(new HandleASession(opponent, socket)).start();
+                        } else {
+                            outputToClient.writeInt(Protocol.WAIT_PLAYER.ordinal());
+                        }
+                        break;
 
                     default:
                         System.out.println("[server] Unrecogized method: " + method);
@@ -83,7 +117,7 @@ class HandleAClient implements Runnable {
 }
 
 public class Server extends Thread {
-    // private static int clientNumber = 0;
+    public static int clientNumber = 0;
     private Database database;
     private HashMap<String, Socket> socketMap;
     
@@ -113,13 +147,14 @@ public class Server extends Thread {
         try {
             serverSocket = new ServerSocket(5842);
             System.out.println("[server] Socket start at 5842");
-            SwingUtilities.invokeLater(() -> taLog.append(new Date() + ": Server started at socket 5842\n"));
+            SwingUtilities.invokeLater(() -> taLog.append(new Date() + ": [server] Socket start at 5842\n"));
 
             while (true) {
                 Socket socket = serverSocket.accept();
                 
-                // ++clientNumber;
+                ++clientNumber;
                 System.out.println("[server] connected with " + socket.getPort());
+                SwingUtilities.invokeLater(() -> taLog.append(new Date() + ": [server] connected with " + socket.getInetAddress().getHostAddress() + ":" + socket.getPort() + "\n"));
                 
                 new Thread(new HandleAClient(socket, database, socketMap)).start();
             }

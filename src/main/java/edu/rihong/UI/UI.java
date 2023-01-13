@@ -50,6 +50,12 @@ public class UI {
         userNameLabel.setBounds((int)(0.85 * screenWidth), (int)(0.4 * screenHeight), (int)(0.15 * screenWidth), (int)(0.1 * screenHeight));
         container.add(userNameLabel);
 
+        JLabel fortuneLabel = new JLabel("fortune: " + String.valueOf(app.user.getFortune()));
+        fortuneLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        fortuneLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 24));
+        fortuneLabel.setBounds((int)(0.85 * screenWidth), (int)(0.45 * screenHeight), (int)(0.15 * screenWidth), (int)(0.1 * screenHeight));
+        container.add(fortuneLabel);
+
         buttonLogin = new JButton();
         buttonLogin.setText("Sign In");
         buttonLogin.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20));
@@ -63,6 +69,7 @@ public class UI {
             new UIlogin(frame, app);
             headPhoto.setIcon(updateFace());
             userNameLabel.setText(app.user.getName());
+            fortuneLabel.setText("fortune: " + String.valueOf(app.user.getFortune()));
             frame.repaint();
         });
         container.add(buttonLogin);
@@ -80,6 +87,7 @@ public class UI {
             new UIregister(frame, app);
             headPhoto.setIcon(updateFace());
             userNameLabel.setText(app.user.getName());
+            fortuneLabel.setText("fortune: " + String.valueOf(app.user.getFortune()));
             frame.repaint();
         });
         container.add(buttonRegister);
@@ -127,6 +135,7 @@ public class UI {
             new UIlogin(frame, app);
             headPhoto.setIcon(updateFace());
             userNameLabel.setText(app.user.getName());
+            fortuneLabel.setText("fortune: " + String.valueOf(app.user.getFortune()));
             frame.repaint();
         });
         JMenuItem m32 = new JMenuItem("Sign up");
@@ -134,6 +143,7 @@ public class UI {
             new UIregister(frame, app);
             headPhoto.setIcon(updateFace());
             userNameLabel.setText(app.user.getName());
+            fortuneLabel.setText("fortune: " + String.valueOf(app.user.getFortune()));
             frame.repaint();
         });
         m3.add(m31);

@@ -9,7 +9,6 @@ import javax.swing.*;
  */
 public class GamePanel extends JPanel {
    // Define named constants for the drawing graphics
-   public static final String TITLE = "Tic Tac Toe";
    public static final Color COLOR_BG = Color.WHITE;
    public static final Color COLOR_BG_STATUS = new Color(216, 216, 216);
    public static final Color COLOR_CROSS = new Color(239, 105, 80);  // Red #EF6950
@@ -113,21 +112,5 @@ public class GamePanel extends JPanel {
          statusBar.setForeground(Color.RED);
          statusBar.setText("'O' Won! Click to play again.");
       }
-   }
-
-   /** The entry "main" method */
-   public static void Gamemain(String[] args) {
-      // Run GUI construction codes in Event-Dispatching thread for thread safety
-      javax.swing.SwingUtilities.invokeLater(new Runnable() {
-         public void run() {
-            JFrame frame = new JFrame(TITLE);
-            // Set the content-pane of the JFrame to an instance of main JPanel
-            frame.setContentPane(new GamePanel());
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.pack();
-            frame.setLocationRelativeTo(null); // center the application window
-            frame.setVisible(true);            // show it
-         }
-      });
    }
 }
