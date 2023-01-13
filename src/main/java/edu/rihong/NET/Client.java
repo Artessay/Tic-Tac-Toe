@@ -3,6 +3,8 @@ package edu.rihong.NET;
 import java.io.*;
 import java.net.Socket;
 
+import edu.rihong.Game.CellState;
+import edu.rihong.Game.GamePanel;
 import edu.rihong.Model.User;
 
 public class Client {
@@ -104,6 +106,58 @@ public class Client {
             toServer.writeUTF(account);
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean getStart(GamePanel g) {
+        int state;
+        try {
+            state = fromServer.readInt();
+            
+            while (state == Protocol.WAIT_PLAYER.ordinal()) {
+                state = fromServer.readInt();
+            }
+            if (state != Protocol.PLAY_START.ordinal()) {
+                System.out.println("Program Error, get start should be PLAY_START");
+                return false;
+            }
+            
+            String role = fromServer.readUTF();
+            if (role.equals("PLAYER1")) {
+                g.initGame(CellState.CROSS);
+            } else if (role.equals("PLAYER2")) {
+                g.initGame(CellState.NOUGHT);
+            } else {
+                System.out.println("Program Error, role is " + role);
+                return false;
+            }
+            
+            g.newGame();
+        } catch (IOException e) {
+            // Auto-generated catch block
+            e.printStackTrace();
+        }
+        return true;
+    }
+
+    public void sendLocation(int row, int col) {
+        try {
+            toServer.writeInt(row);
+            toServer.writeInt(col);
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getLocation(int[] pos) {
+        try {
+            if (pos.length != 2) {
+                System.out.println("Program Error, transfer location");
+            }
+            pos[0] = fromServer.readInt();
+            pos[1] = fromServer.readInt();
+        } catch(IOException ex) {
+            ex.printStackTrace();
         }
     }
 }

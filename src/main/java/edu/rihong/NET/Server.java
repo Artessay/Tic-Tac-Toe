@@ -25,15 +25,17 @@ class HandleAClient implements Runnable {
     private Socket socket;  // A connected socket
     private Database database;
     private HashMap<String, Socket> socketMap;
+    private JTextArea textAreaLog;
 
     private static Lock lock = new ReentrantLock();
     private static int playerNumber = 0;
     private static Socket waitPlayer = null;
 
-    public HandleAClient(Socket socket, Database database, HashMap<String, Socket> socketMap) {
+    public HandleAClient(Socket socket, Database database, HashMap<String, Socket> socketMap, JTextArea taLog) {
         this.socket = socket;
         this.database = database;
         this.socketMap = socketMap;
+        this.textAreaLog = taLog;
     }
 
     public void run() {
@@ -43,6 +45,7 @@ class HandleAClient implements Runnable {
             ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
 
+            LabelWhile:
             while (true) {
                 String method = inputFromClient.readUTF();
                 User user;
@@ -95,11 +98,14 @@ class HandleAClient implements Runnable {
                         }
 
                         if (play) {
+                            SwingUtilities.invokeLater(() -> textAreaLog.append(new Date() + ": [server] two players are ready, game starts\n"));
                             new Thread(new HandleASession(opponent, socket)).start();
                         } else {
+                            SwingUtilities.invokeLater(() -> textAreaLog.append(new Date() + ": [server] one player is waiting\n"));
                             outputToClient.writeInt(Protocol.WAIT_PLAYER.ordinal());
                         }
-                        break;
+                        break LabelWhile;
+                        // break;
 
                     default:
                         System.out.println("[server] Unrecogized method: " + method);
@@ -156,7 +162,7 @@ public class Server extends Thread {
                 System.out.println("[server] connected with " + socket.getPort());
                 SwingUtilities.invokeLater(() -> taLog.append(new Date() + ": [server] connected with " + socket.getInetAddress().getHostAddress() + ":" + socket.getPort() + "\n"));
                 
-                new Thread(new HandleAClient(socket, database, socketMap)).start();
+                new Thread(new HandleAClient(socket, database, socketMap, taLog)).start();
             }
         } catch (IOException e) {
             e.printStackTrace();

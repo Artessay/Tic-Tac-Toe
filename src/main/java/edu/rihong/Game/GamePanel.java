@@ -42,14 +42,16 @@ public class GamePanel extends JPanel {
             int col = mouseX / Cell.SIZE;
 
             if (currentState == State.PLAYING) {
-               if (currentPlayer == userRole) {
-                  if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
-                        && board.cells[row][col].content == CellState.NO_SEED) {
-                     // Update cells[][] and return the new game state after the move
+               if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
+                  && board.cells[row][col].content == CellState.NO_SEED) {
+                  if (currentPlayer == userRole) {
                      currentState = board.stepGame(currentPlayer, row, col);
 
                      // Switch player
-                     currentPlayer = (currentPlayer == CellState.CROSS) ? CellState.NOUGHT : CellState.CROSS;
+                     switchCurrentPlayer();
+
+                     // notify opponent
+                     app.networkClient.sendLocation(row, col);
                   }
                }
                
@@ -76,6 +78,9 @@ public class GamePanel extends JPanel {
             app.networkClient.postReady(app.user.getAccount());
             currentState = State.READY;
             this.repaint();
+            new Thread(() -> {
+               app.networkClient.getStart(this);
+            }).start();
          }
       });
 
@@ -105,7 +110,7 @@ public class GamePanel extends JPanel {
       // newGame();
    }
 
-   public void setRole(CellState role) {
+   private void setRole(CellState role) {
       if (role == CellState.NO_SEED) {
          System.out.println("Program Error, role should not be empty");
          return;
@@ -130,6 +135,7 @@ public class GamePanel extends JPanel {
       }
       currentPlayer = CellState.CROSS;    // cross plays first
       currentState = State.PLAYING;  // ready to play
+      repaint();
    }
 
    /** Custom painting codes on this JPanel */
@@ -167,5 +173,9 @@ public class GamePanel extends JPanel {
             statusBar.setText("'O' Won! Click to play again.");
          }
       }
+   }
+
+   private void switchCurrentPlayer() {
+      currentPlayer = (currentPlayer == CellState.CROSS) ? CellState.NOUGHT : CellState.CROSS;
    }
 }
