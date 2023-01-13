@@ -25,6 +25,7 @@ public class UI {
         JFrame frame = new JFrame("Art Room");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        frame.setResizable(true);
         frame.setLayout(null);
 
         Container container = frame.getContentPane();
