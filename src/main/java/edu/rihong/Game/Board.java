@@ -57,20 +57,7 @@ public class Board {
       cells[selectedRow][selectedCol].content = player;
 
       // Compute and return the new game state
-      if (cells[selectedRow][0].content == player  // 3-in-the-row
-                && cells[selectedRow][1].content == player
-                && cells[selectedRow][2].content == player
-             || cells[0][selectedCol].content == player // 3-in-the-column
-                && cells[1][selectedCol].content == player
-                && cells[2][selectedCol].content == player
-             || selectedRow == selectedCol     // 3-in-the-diagonal
-                && cells[0][0].content == player
-                && cells[1][1].content == player
-                && cells[2][2].content == player
-             || selectedRow + selectedCol == 2 // 3-in-the-opposite-diagonal
-                && cells[0][2].content == player
-                && cells[1][1].content == player
-                && cells[2][0].content == player) {
+      if (isWon(player, selectedRow, selectedCol)) {
          return (player == CellState.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
       } else {
          // Nobody win. Check for DRAW (all cells occupied) or PLAYING.
@@ -85,7 +72,6 @@ public class Board {
       }
    }
 
-   /** Paint itself on the graphics canvas, given the Graphics context */
    public void paint(Graphics g) {
       // Draw the grid-lines
       g.setColor(COLOR_GRID);
@@ -103,8 +89,70 @@ public class Board {
       // Draw all the cells
       for (int row = 0; row < ROWS; ++row) {
          for (int col = 0; col < COLS; ++col) {
-            cells[row][col].paint(g);  // ask the cell to paint itself
+            cells[row][col].paint(g);
          }
       }
+   }
+
+   /**
+    * Determine if the player with the specified CellState wins
+    * @param player
+    * @param selectedRow
+    * @param selectedCol
+    * @return
+    */
+   private boolean isWon(CellState player, int selectedRow, int selectedCol) {
+      boolean flag;
+
+      // row
+      flag = true;
+      for (int col = 0; col < COLS; ++col) {
+         if (cells[selectedRow][col].content != player) {
+            flag = false;
+            break;
+         }
+      }
+      if (flag) {
+         return true;
+      } else {
+         flag = true;
+      }
+
+      // col
+      for (int row = 0; row < ROWS; ++row) {
+         if (cells[row][selectedCol].content != player) {
+            flag = false;
+            break;
+         }
+      }
+      if (flag) {
+         return true;
+      } else {
+         flag = true;
+      }
+
+      // check major diagonal
+      for (int diagonal = 0; diagonal < ROWS; ++diagonal) {
+         if (cells[diagonal][diagonal].content != player) {
+            flag = false;
+            break;
+         }
+      }
+      if (flag) {
+         return true;
+      } else {
+         flag = true;
+      }
+
+      // check subdiagonal
+      for (int diagonal = 0; diagonal < ROWS; ++diagonal) {
+         if (cells[diagonal][ROWS - diagonal - 1].content != player) {
+            flag = false;
+            break;
+         }
+      }
+
+      // all checked
+      return flag;
    }
 }

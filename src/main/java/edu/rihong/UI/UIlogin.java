@@ -6,6 +6,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
+/**
+ * Login User Interface
+ */
 public class UIlogin extends JDialog implements ActionListener {
     private App app;
 

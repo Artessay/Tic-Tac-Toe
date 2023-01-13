@@ -7,6 +7,9 @@ import edu.rihong.Game.GamePanel;
 
 import java.awt.*;
 
+/**
+ * User Interface
+ */
 public class UI {
     static Image icon = new ImageIcon("img/icon.jpg").getImage();
     private App app;
