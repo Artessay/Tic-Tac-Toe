@@ -28,7 +28,7 @@ public class Database {
         }
     }
 
-    public boolean register(String account, String username, char gender, String passward) {
+    public boolean register(String account, String username, char gender, int fortune, String passward) {
         if (gender != 'M' && gender != 'F') {
             System.out.println("[server] Program Error, gender should be M or F");
             return false;
@@ -36,7 +36,7 @@ public class Database {
 
         try {
             String queryString = "insert user values ('" +
-                account + "', '" + username + "', '" + gender + "', '"  + passward + "')";
+                account + "', '" + username + "', '" + gender + "', " + fortune  + ", '"  + passward + "')";
             
             int ret = statement.executeUpdate(queryString);
             return ret == 1;
@@ -47,12 +47,12 @@ public class Database {
     }
 
     public boolean register(User user) {
-        return register(user.getAccount(), user.getName(), user.getGender(), user.getPassword());
+        return register(user.getAccount(), user.getName(), user.getGender(), user.getFortune(), user.getPassword());
     }
 
     public boolean login(String account, String passward, User user) {
         try {
-            String queryString = "select name, gender, password " + 
+            String queryString = "select name, gender, fortune, password " + 
                 "from user where uid = " + account;
             
             ResultSet resultSet = statement.executeQuery(queryString);
@@ -60,7 +60,8 @@ public class Database {
             if (resultSet.next()) {
                 String userName = resultSet.getString(1);
                 String gender = resultSet.getString(2);
-                String passWord = resultSet.getString(3);
+                int fortune = resultSet.getInt(3);
+                String passWord = resultSet.getString(4);
                 // System.out.println("database: " + " " + userName + " " + gender + " ");
 
                 if (user == null) {
@@ -73,6 +74,7 @@ public class Database {
                     user.setAccount(account);
                     user.setName(userName);
                     user.setGender(gender.equals("M") ? 'M' : 'F');
+                    user.setFortune(fortune);
                     user.setPassword(passWord);
 
                     return true;

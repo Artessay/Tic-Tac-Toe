@@ -154,6 +154,7 @@ public class UIregister extends JDialog implements ActionListener  {
             app.user.setAccount(account);
             app.user.setName(username);
             app.user.setGender(inputGender);
+            app.user.setFortune(5000);
             app.user.setPassword(password);
             boolean ret = app.networkClient.postRegister(app.user);
             if (ret) {

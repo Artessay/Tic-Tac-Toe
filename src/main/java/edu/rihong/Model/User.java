@@ -11,6 +11,8 @@ public class User implements Serializable {
 
     private char gender;
 
+    private int fortune;
+
     private String password;
 
     public User() {
@@ -23,6 +25,7 @@ public class User implements Serializable {
         account = "";
         name = "Anonymous";
         gender = 'M';
+        fortune = 5000;
         password = "";
     }
 
@@ -31,6 +34,7 @@ public class User implements Serializable {
         this.setAccount(user.getAccount());
         this.setName(user.getName());
         this.setGender(user.getGender());
+        this.setFortune(user.getFortune());
         this.setPassword(user.getPassword());
     }
 
@@ -44,6 +48,10 @@ public class User implements Serializable {
 
     public char getGender() {
         return gender;
+    }
+
+    public int getFortune() {
+        return fortune;
     }
 
     public String getPassword() {
@@ -65,6 +73,14 @@ public class User implements Serializable {
         }
 
         this.gender = gender;
+    }
+
+    public void setFortune(int fortune) {
+        if (fortune < 0) {
+            fortune =  0;
+        }
+
+        this.fortune = fortune;
     }
 
     public void setPassword(String password) {

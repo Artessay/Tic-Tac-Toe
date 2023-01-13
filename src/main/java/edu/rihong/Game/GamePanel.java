@@ -8,8 +8,6 @@ import javax.swing.*;
  * The Board and Cell classes are separated in their own classes.
  */
 public class GamePanel extends JPanel {
-   private static final long serialVersionUID = 1L; // to prevent serializable warning
-
    // Define named constants for the drawing graphics
    public static final String TITLE = "Tic Tac Toe";
    public static final Color COLOR_BG = Color.WHITE;
@@ -26,8 +24,7 @@ public class GamePanel extends JPanel {
 
    /** Constructor to setup the UI and game components */
    public GamePanel() {
-
-      // This JPanel fires MouseEvent
+      // Deal with MouseEvent
       super.addMouseListener(new MouseAdapter() {
          @Override
          public void mouseClicked(MouseEvent e) {  // mouse-clicked handler
