@@ -168,19 +168,25 @@ public class Client {
             while (g.getCurrentState() == State.PLAYING) {
                 System.out.println(g.getUserRole());
                 if (g.getUserRole() == CellState.CROSS) {
+                    System.out.println("CROSS: ready");
                     // wait player cross to move
                     waitMouseAction();
+                    System.out.println("CROSS: over");
 
                     // wait player nought to move
                     getLocation(g);
                     g.stepGame(CellState.NOUGHT);
+                    System.out.println("CROSS: haha");
                 } else if (g.getUserRole() == CellState.NOUGHT) {
+                    System.out.println("NOUGH: wait");
                     // wait player cross to move
                     getLocation(g);
                     g.stepGame(CellState.CROSS);
                     
+                    System.out.println("NOUGH: ready");
                     // wait player cross to move
                     waitMouseAction();
+                    System.out.println("NOUGH: over");
                 } else {
                     System.out.println("Program Error in playControl, current player wrong");
                     break;
@@ -191,21 +197,11 @@ public class Client {
     }
 
     public void sendLocation(int row, int col) {
+        System.out.println("[client] send location");
         try {
+            toServer.writeUTF("PLAY");
             toServer.writeInt(row);
             toServer.writeInt(col);
-        } catch(IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public void getLocation(int[] pos) {
-        try {
-            if (pos.length != 2) {
-                System.out.println("Program Error, transfer location");
-            }
-            pos[0] = fromServer.readInt();
-            pos[1] = fromServer.readInt();
         } catch(IOException ex) {
             ex.printStackTrace();
         }

@@ -48,14 +48,17 @@ public class GamePanel extends JPanel {
                      selectedRow = row;
                      selectedCol = col;
                      stepGame(currentPlayer);
-
+System.out.println("Clicked");
+                     // notify opponent
                      app.networkClient.resetWaitMove();
+                     app.networkClient.sendLocation(selectedRow, selectedCol);
                   }
                }
                
             } else if (currentState == State.DRAW 
                   || currentState == State.CROSS_WON 
                   || currentState == State.NOUGHT_WON) {
+               userRole = (userRole == CellState.CROSS) ? CellState.NOUGHT : CellState.CROSS;   // flip user role
                newGame();  // restart the game
             }
             // Refresh the drawing canvas
@@ -95,17 +98,12 @@ public class GamePanel extends JPanel {
       super.add(startButton, BorderLayout.CENTER);
       super.add(statusBar, BorderLayout.SOUTH);
       super.setPreferredSize(new Dimension(Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30));
-            // account for statusBar in height
-      super.setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));
+      super.setBorder(BorderFactory.createLineBorder(COLOR_BG_STATUS, 2, false));   // status bar
 
       Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
       int screenWidth  = (int)screenSize.getWidth();
       int screenHeight = (int)screenSize.getHeight();
       super.setBounds(screenWidth / 2 - Board.CANVAS_WIDTH, (screenHeight - Board.CANVAS_HEIGHT) / 2, Board.CANVAS_WIDTH, Board.CANVAS_HEIGHT + 30);
-
-      // Set up Game
-      // initGame();
-      // newGame();
    }
 
    private void setRole(CellState role) {
@@ -140,12 +138,13 @@ public class GamePanel extends JPanel {
 
    public void stepGame(CellState player) {
       currentState = board.stepGame(currentPlayer, selectedRow, selectedCol);
-
+      // System.out.println(player + " Step into next game");
+      
       // Switch player
       switchCurrentPlayer();
 
-      // notify opponent
-      app.networkClient.sendLocation(selectedRow, selectedCol);
+      // Refresh the drawing canvas
+      repaint();  // Callback paintComponent().
    }
 
    /** Custom painting codes on this JPanel */

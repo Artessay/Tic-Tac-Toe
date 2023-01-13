@@ -40,7 +40,14 @@ public class HandleASession implements Runnable {
     public void run() {
         try {
             int row, col;
+            String method;
             while (true) {
+                method = inputStreamPlayer1.readUTF();
+                if (method.equals("PLAY") == false) {
+                    System.out.println("[server] Error, method " + method + " get");
+                    break;
+                }
+
                 row = inputStreamPlayer1.readInt();
                 col = inputStreamPlayer1.readInt();
 
@@ -50,6 +57,12 @@ public class HandleASession implements Runnable {
                 outputStreamPlayer2.writeInt(col);
                 
                 System.out.println("[server] write to player2 (" + row + ", " + col + ")");
+
+                method = inputStreamPlayer2.readUTF();
+                if (method.equals("PLAY") == false) {
+                    System.out.println("[server] Error, method " + method + " get");
+                    break;
+                }
 
                 row = inputStreamPlayer2.readInt();
                 col = inputStreamPlayer2.readInt();
