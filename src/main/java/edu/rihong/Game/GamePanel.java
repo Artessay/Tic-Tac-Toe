@@ -5,16 +5,16 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import edu.rihong.App;
-/**
- * Tic-Tac-Toe: Two-player Graphic version with better OO design.
- * The Board and Cell classes are separated in their own classes.
- */
+
 public class GamePanel extends JPanel {
    // Define named constants for the drawing graphics
    public static final Color COLOR_BG = Color.WHITE;
    public static final Color COLOR_BG_STATUS = new Color(216, 216, 216);
    public static final Color COLOR_CROSS = new Color(239, 105, 80);  // Red #EF6950
    public static final Color COLOR_NOUGHT = new Color(64, 154, 225); // Blue #409AE1
+
+   public int selectedRow;
+   public int selectedCol;
 
    // Define game objects
    private Board board;         // the game board
@@ -45,13 +45,11 @@ public class GamePanel extends JPanel {
                if (row >= 0 && row < Board.ROWS && col >= 0 && col < Board.COLS
                   && board.cells[row][col].content == CellState.NO_SEED) {
                   if (currentPlayer == userRole) {
-                     currentState = board.stepGame(currentPlayer, row, col);
+                     selectedRow = row;
+                     selectedCol = col;
+                     stepGame(currentPlayer);
 
-                     // Switch player
-                     switchCurrentPlayer();
-
-                     // notify opponent
-                     app.networkClient.sendLocation(row, col);
+                     app.networkClient.resetWaitMove();
                   }
                }
                
@@ -136,6 +134,18 @@ public class GamePanel extends JPanel {
       currentPlayer = CellState.CROSS;    // cross plays first
       currentState = State.PLAYING;  // ready to play
       repaint();
+
+      app.networkClient.playControl(this);
+   }
+
+   public void stepGame(CellState player) {
+      currentState = board.stepGame(currentPlayer, selectedRow, selectedCol);
+
+      // Switch player
+      switchCurrentPlayer();
+
+      // notify opponent
+      app.networkClient.sendLocation(selectedRow, selectedCol);
    }
 
    /** Custom painting codes on this JPanel */
@@ -173,6 +183,14 @@ public class GamePanel extends JPanel {
             statusBar.setText("'O' Won! Click to play again.");
          }
       }
+   }
+
+   public State getCurrentState() {
+      return currentState;
+   }
+
+   public CellState getUserRole() {
+      return userRole;
    }
 
    private void switchCurrentPlayer() {

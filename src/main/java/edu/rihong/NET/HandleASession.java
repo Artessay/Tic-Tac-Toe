@@ -25,7 +25,7 @@ public class HandleASession implements Runnable {
 
             // get player2 socket resource
             outputStreamPlayer2 = new DataOutputStream(socketPlayer2.getOutputStream());
-            inputStreamPlayer2 = new DataInputStream(socketPlayer1.getInputStream());
+            inputStreamPlayer2 = new DataInputStream(socketPlayer2.getInputStream());
 
             // play start
             outputStreamPlayer1.writeInt(Protocol.PLAY_START.ordinal());
@@ -62,7 +62,7 @@ public class HandleASession implements Runnable {
                 System.out.println("[server] write to player1 (" + row + ", " + col + ")");
             }
         } catch (IOException e) {
-            // TODO Auto-generated catch block
+            // Auto-generated catch block
             e.printStackTrace();
         }
     }

@@ -5,6 +5,7 @@ import java.net.Socket;
 
 import edu.rihong.Game.CellState;
 import edu.rihong.Game.GamePanel;
+import edu.rihong.Game.State;
 import edu.rihong.Model.User;
 
 public class Client {
@@ -123,6 +124,7 @@ public class Client {
             }
             
             String role = fromServer.readUTF();
+            // System.out.println(role);
             if (role.equals("PLAYER1")) {
                 g.initGame(CellState.CROSS);
             } else if (role.equals("PLAYER2")) {
@@ -138,6 +140,58 @@ public class Client {
             e.printStackTrace();
         }
         return true;
+    }
+
+    private boolean waitMove = true;
+
+    public void setWaitMove() {
+        waitMove = true;
+    }
+
+    public void resetWaitMove() {
+        waitMove = false;
+    }
+
+    private void waitMouseAction() {
+        while (waitMove) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                // Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        waitMove = true;
+    }
+
+    public void playControl(GamePanel g) {
+        waitMove = true;
+
+        new Thread(() -> {
+            while (g.getCurrentState() == State.PLAYING) {
+                System.out.println(g.getUserRole());
+                if (g.getUserRole() == CellState.CROSS) {
+                    // wait player cross to move
+                    waitMouseAction();
+
+                    // wait player nought to move
+                    getLocation(g);
+                    g.stepGame(CellState.NOUGHT);
+                } else if (g.getUserRole() == CellState.NOUGHT) {
+                    // wait player cross to move
+                    getLocation(g);
+                    g.stepGame(CellState.CROSS);
+                    
+                    // wait player cross to move
+                    waitMouseAction();
+                } else {
+                    System.out.println("Program Error in playControl, current player wrong");
+                    break;
+                }
+            }
+            
+        }).start();
     }
 
     public void sendLocation(int row, int col) {
@@ -156,6 +210,15 @@ public class Client {
             }
             pos[0] = fromServer.readInt();
             pos[1] = fromServer.readInt();
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void getLocation(GamePanel g) {
+        try {
+            g.selectedRow = fromServer.readInt();
+            g.selectedCol = fromServer.readInt();
         } catch(IOException ex) {
             ex.printStackTrace();
         }
