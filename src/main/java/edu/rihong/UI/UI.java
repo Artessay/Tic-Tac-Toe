@@ -31,13 +31,9 @@ public class UI {
 
         Container container = frame.getContentPane();
 
-        // JPanel panel = new JPanel();
-        // panel.setLayout(new BorderLayout());
-
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth  = (int)screenSize.getWidth();
         int screenHeight = (int)screenSize.getHeight();
-
 
         
         JLabel background = new JLabel(SwingUtil.createAutoAdjustIcon(new ImageIcon("img/spring.png").getImage()));
@@ -97,6 +93,9 @@ public class UI {
         });
         container.add(buttonRegister);
 
+        gamePanel = new GamePanel(app);
+        container.add(gamePanel);
+        
         // JTextPane chatTextPane = new JTextPane();
         // JScrollPane chatPane = new JScrollPane(chatTextPane);
 
@@ -113,9 +112,6 @@ public class UI {
         chatPanel.add(textField);
         chatPanel.add(send);
         // chatPanel.add(reset);
-
-        gamePanel = new GamePanel(app);
-        container.add(gamePanel);
 
         // Text Area at the Center
         // JTextArea ta = new JTextArea();
@@ -157,14 +153,6 @@ public class UI {
         
         frame.setJMenuBar(menu_bar);
 
-        //Adding Components to the frame.
-        // panel.add(BorderLayout.EAST, chatPanel);
-        // panel.add(BorderLayout.NORTH, background);
-        // panel.add(BorderLayout.CENTER, ta);
-        // frame.add(panel);
-        // frame.getContentPane().add(BorderLayout.EAST, chatPanel);
-        // frame.getContentPane().add(BorderLayout.NORTH, background);
-        // frame.getContentPane().add(BorderLayout.CENTER, ta);
         frame.setVisible(true);
     }
 
