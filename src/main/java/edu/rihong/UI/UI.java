@@ -11,6 +11,8 @@ import java.awt.*;
  * User Interface
  */
 public class UI {
+    private static final Color THEME_BG_COLOR = new Color(206, 248, 185);
+
     static Image icon = new ImageIcon("img/icon.jpg").getImage();
     private App app;
     private JFrame frame;
@@ -63,7 +65,7 @@ public class UI {
         buttonLogin.setBounds(screenWidth - 230, screenHeight - 150, 115, 40);
         buttonLogin.setFocusPainted(false);
         buttonLogin.setForeground(Color.BLACK);
-        buttonLogin.setBackground(new Color(206, 248, 185));
+        buttonLogin.setBackground(THEME_BG_COLOR);
         // buttonLogin.setOpaque(false);
         // buttonLogin.setContentAreaFilled(false);
         buttonLogin.addActionListener(e -> {
@@ -81,7 +83,7 @@ public class UI {
         buttonRegister.setBounds(screenWidth - 115, screenHeight - 150, 115, 40);
         buttonRegister.setFocusPainted(false);
         buttonRegister.setForeground(Color.BLACK);
-        buttonRegister.setBackground(new Color(206, 248, 185));
+        buttonRegister.setBackground(THEME_BG_COLOR);
         // buttonRegister.setOpaque(false);
         // buttonRegister.setContentAreaFilled(false);
         buttonRegister.addActionListener(e -> {
@@ -123,11 +125,14 @@ public class UI {
         JMenu m1 = new JMenu("FILE");
         JMenuItem m11 = new JMenuItem("Open");
         JMenuItem m12 = new JMenuItem("Save as");
+        JMenuItem m13 = new JMenuItem("Rank");
         m1.add(m11);
         m1.add(m12);
+        m1.add(m13);
         menu_bar.add(m1);
 
         JMenu m2 = new JMenu("Help");
+        // m2.addActionListener(e -> {});
         menu_bar.add(m2);
 
         JMenu m3 = new JMenu("Account");
