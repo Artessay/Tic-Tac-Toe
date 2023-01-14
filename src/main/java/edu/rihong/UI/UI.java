@@ -6,6 +6,7 @@ import edu.rihong.App;
 import edu.rihong.Game.GamePanel;
 
 import java.awt.*;
+import java.awt.event.*;
 
 /**
  * User Interface
@@ -16,6 +17,14 @@ public class UI {
     static Image icon = new ImageIcon("img/icon.jpg").getImage();
     private App app;
     private JFrame frame;
+
+    class windowListener extends WindowAdapter {
+        @Override
+        public void windowClosing(WindowEvent e) {
+            super.windowClosing(e);
+            app.networkClient.close();
+        }
+    }
 
     public UI(App app) {
         this.app = app;
@@ -30,6 +39,7 @@ public class UI {
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setResizable(true);
         frame.setLayout(null);
+        frame.addWindowListener(new windowListener());
 
         Container container = frame.getContentPane();
 

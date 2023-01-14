@@ -39,6 +39,8 @@ public class Client {
 
     public void close() {
         try {
+            toServer.writeUTF("CLOSE");
+            
             fromServer.close();
             toServer.close();
             objectInputStream.close();

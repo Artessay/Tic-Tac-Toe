@@ -39,12 +39,18 @@ class HandleAClient implements Runnable {
     }
 
     public void run() {
+        // try-resource
+        // try (
+        //     DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
+        //     DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
+        //     ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
+        //     ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
+        // ) {
         try {
             DataInputStream inputFromClient = new DataInputStream(socket.getInputStream());
             DataOutputStream outputToClient = new DataOutputStream(socket.getOutputStream());
             ObjectInputStream objectInput = new ObjectInputStream(socket.getInputStream());
             ObjectOutputStream objectOutput = new ObjectOutputStream(socket.getOutputStream());
-
             LabelWhile:
             while (true) {
                 String method = inputFromClient.readUTF();
