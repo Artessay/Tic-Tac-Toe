@@ -7,31 +7,27 @@ import javax.swing.*;
 import edu.rihong.App;
 
 public class GamePanel extends JPanel {
-   // Define named constants for the drawing graphics
    public static final Color COLOR_BG = Color.WHITE;
    public static final Color COLOR_BG_STATUS = new Color(216, 216, 216);
-   public static final Color COLOR_CROSS = new Color(239, 105, 80);  // Red #EF6950
-   public static final Color COLOR_NOUGHT = new Color(64, 154, 225); // Blue #409AE1
+   public static final Color COLOR_CROSS = new Color(239, 105, 80);  // Red 
+   public static final Color COLOR_NOUGHT = new Color(64, 154, 225); // Blue 
 
    public int selectedRow;
    public int selectedCol;
 
-   // Define game objects
    private Board board;         // the game board
    private State currentState;  // the current state of the game
    private CellState currentPlayer; // the current player
    private CellState userRole;      // the role of user
    private JLabel statusBar;    // for displaying status message
-   private JButton startButton; // start button
+   private JButton startButton; // the start button
 
    private App app;
 
-   /** Constructor to setup the UI and game components */
    public GamePanel(App uapp) {
       this.app = uapp;
       currentState = State.IDLE;
 
-      // Deal with MouseEvent
       super.addMouseListener(new MouseAdapter() {
          @Override
          public void mouseClicked(MouseEvent e) {  // mouse-clicked handler
@@ -152,8 +148,7 @@ public class GamePanel extends JPanel {
       // Refresh the drawing canvas
       repaint();  // Callback paintComponent().
    }
-
-   /** Custom painting codes on this JPanel */
+   
    @Override
    public void paintComponent(Graphics g) {  // Callback via repaint()
       super.paintComponent(g);
@@ -180,12 +175,17 @@ public class GamePanel extends JPanel {
          } else if (currentState == State.DRAW) {
             statusBar.setForeground(Color.RED);
             statusBar.setText("It's a Draw! Click to play again.");
-         } else if (currentState == State.CROSS_WON) {
-            statusBar.setForeground(Color.RED);
-            statusBar.setText("'X' Won! Click to play again.");
-         } else if (currentState == State.NOUGHT_WON) {
-            statusBar.setForeground(Color.RED);
-            statusBar.setText("'O' Won! Click to play again.");
+         } else {
+            if (currentState == State.CROSS_WON 
+            || currentState == State.NOUGHT_WON) {
+               // game over
+               statusBar.setForeground(Color.RED);
+               if (currentPlayer != userRole) {
+                  statusBar.setText("'You Won! Click to play again.");
+               } else {
+                  statusBar.setText("'You Loss. Click to play again.");
+               }
+            }
          }
       }
    }

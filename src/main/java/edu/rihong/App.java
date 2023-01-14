@@ -2,7 +2,7 @@ package edu.rihong;
 
 import edu.rihong.Model.User;
 import edu.rihong.NET.Client;
-import edu.rihong.NET.Server;
+// import edu.rihong.NET.Server;
 import edu.rihong.UI.UI;
 
 /**
@@ -42,9 +42,9 @@ public class App
     public static void main( String[] args )
     {
         // @debug
-        new Thread(new Server()).start();
-        App app2 = new App();
-        app2.ui = new UI(app2);
+        // new Thread(new Server()).start();
+        // App app2 = new App();
+        // app2.ui = new UI(app2);
 
         System.out.println( "Hello ZJUer!" );
         
