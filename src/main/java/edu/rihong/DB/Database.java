@@ -52,6 +52,13 @@ public class Database {
         return register(user.getAccount(), user.getName(), user.getGender(), user.getFortune(), user.getPassword());
     }
 
+    /**
+     * Account login
+     * @param account [in] uid
+     * @param passward [in] password
+     * @param user [out] user class
+     * @return
+     */
     public boolean login(String account, String passward, User user) {
         try {
             String queryString = "select name, gender, fortune, password " + 

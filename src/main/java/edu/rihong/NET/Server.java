@@ -107,6 +107,9 @@ class HandleAClient implements Runnable {
                         break LabelWhile;
                         // break;
 
+                    case "CLOSE":
+                        break LabelWhile;
+
                     default:
                         System.out.println("[server] Unrecogized method: " + method);
                         break;

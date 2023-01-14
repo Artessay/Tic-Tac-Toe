@@ -23,8 +23,10 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
-  `uid` char(10) NOT NULL,
+  `uid` varchar(10) NOT NULL,
   `name` varchar(64) DEFAULT NULL,
+  `gender` enum('M','F') DEFAULT NULL,
+  `fortune` int DEFAULT '5000',
   `password` varchar(64) DEFAULT NULL,
   PRIMARY KEY (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
@@ -36,7 +38,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('3200105842','qrh','qrh');
+INSERT INTO `user` VALUES ('3200100520','admin','F',5000,'admin'),('3200105842','qrh','M',6000,'123456'),('3200109999','cherry','F',5000,'CC98');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -49,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-01-11 12:34:33
+-- Dump completed on 2023-01-14 14:50:57

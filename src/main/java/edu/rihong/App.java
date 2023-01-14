@@ -42,9 +42,9 @@ public class App
     public static void main( String[] args )
     {
         // @debug
-        new Thread(new Server()).start();
-        App app2 = new App();
-        app2.ui = new UI(app2);
+        // new Thread(new Server()).start();
+        // App app2 = new App();
+        // app2.ui = new UI(app2);
 
         System.out.println( "Hello ZJUer!" );
         
