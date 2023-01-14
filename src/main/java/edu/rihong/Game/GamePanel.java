@@ -67,7 +67,6 @@ public class GamePanel extends JPanel {
                   }
                }
                
-
                // change user role
                userRole = (userRole == CellState.CROSS) ? CellState.NOUGHT : CellState.CROSS;   // flip user role
                newGame();  // restart the game
