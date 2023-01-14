@@ -2,9 +2,6 @@ package edu.rihong.Game;
 
 import java.awt.*;
 
-/**
- * The Board class models the ROWS-by-COLS game board.
- */
 public class Board {
    static final int ROWS = 3;
    static final int COLS = 3;
@@ -17,58 +14,44 @@ public class Board {
    static final int Y_OFFSET = 1;
 
    Cell[][] cells;
+   static final int CELLS_TOTAL = COLS * ROWS;
+   private int cellsFilled;
 
    public Board() {
       initGame();
    }
 
    public void initGame() {
-      cells = new Cell[ROWS][COLS]; // allocate the array
+      cells = new Cell[ROWS][COLS];
+      
       for (int row = 0; row < ROWS; ++row) {
          for (int col = 0; col < COLS; ++col) {
-            // Allocate element of the array
             cells[row][col] = new Cell(row, col);
-               // Cells are initialized in the constructor
          }
       }
    }
 
-   /** Reset the game board, ready for new game */
    public void newGame() {
+      cellsFilled = 0;
       for (int row = 0; row < ROWS; ++row) {
          for (int col = 0; col < COLS; ++col) {
-            cells[row][col].newGame(); // clear the cell content
+            cells[row][col].newGame();
          }
       }
    }
 
-   /**
-    *  The given player makes a move on (selectedRow, selectedCol).
-    *  Update cells[selectedRow][selectedCol]. Compute and return the
-    *  new game state (PLAYING, DRAW, CROSS_WON, NOUGHT_WON).
-    */
    public State stepGame(CellState player, int selectedRow, int selectedCol) {
-      // Update game board
       cells[selectedRow][selectedCol].content = player;
 
-      // Compute and return the new game state
       if (isWon(player, selectedRow, selectedCol)) {
          return (player == CellState.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
       } else {
-         // Nobody win. Check for DRAW (all cells occupied) or PLAYING.
-         for (int row = 0; row < ROWS; ++row) {
-            for (int col = 0; col < COLS; ++col) {
-               if (cells[row][col].content == CellState.NO_SEED) {
-                  return State.PLAYING; // still have empty cells
-               }
-            }
-         }
-         return State.DRAW; // no empty cell, it's a draw
+         ++cellsFilled;
+         return (cellsFilled == CELLS_TOTAL) ? State.DRAW : State.PLAYING;
       }
    }
 
    public void paint(Graphics g) {
-      // Draw the grid-lines
       g.setColor(COLOR_GRID);
       for (int row = 1; row < ROWS; ++row) {
          g.fillRoundRect(0, Cell.SIZE * row - GRID_WIDHT_HALF,
@@ -81,7 +64,6 @@ public class Board {
                GRID_WIDTH, GRID_WIDTH);
       }
 
-      // Draw all the cells
       for (int row = 0; row < ROWS; ++row) {
          for (int col = 0; col < COLS; ++col) {
             cells[row][col].paint(g);

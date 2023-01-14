@@ -2,12 +2,8 @@ package edu.rihong.Game;
 
 import java.awt.*;
 
-/**
- * The Cell class models each individual cell of the game board
- */
 public class Cell {
-   // Define named constants for drawing
-   public static final int SIZE = 150; // cell width/height (square)
+   public static final int SIZE = 150; // cell width and height
 
    // Symbols (cross/nought) are displayed inside a cell, with padding from border
    public static final int PADDING = SIZE / 5;
@@ -18,7 +14,7 @@ public class Cell {
    /** Content of this cell (Seed.EMPTY, Seed.CROSS, or Seed.NOUGHT) */
    CellState content;
    /** Row and column of this cell */
-   int row, col;
+   private int row, col;
 
    /** Constructor to initialize this cell with the specified row and col */
    public Cell(int row, int col) {

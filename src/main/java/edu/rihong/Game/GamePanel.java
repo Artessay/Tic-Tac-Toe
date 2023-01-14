@@ -133,13 +133,9 @@ public class GamePanel extends JPanel {
       setRole(role);
    }
 
-   /** Reset the game-board contents and the current-state, ready for new game */
    public void newGame() {
-      for (int row = 0; row < Board.ROWS; ++row) {
-         for (int col = 0; col < Board.COLS; ++col) {
-            board.cells[row][col].content = CellState.NO_SEED; // all cells empty
-         }
-      }
+      board.newGame();
+      
       currentPlayer = CellState.CROSS;    // cross plays first
       currentState = State.PLAYING;  // ready to play
       repaint();

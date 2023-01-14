@@ -181,31 +181,39 @@ public class Client {
             while (g.getCurrentState() == State.PLAYING) {
                 System.out.println(g.getUserRole());
                 if (g.getUserRole() == CellState.CROSS) {
-                    System.out.println("CROSS: ready");
+                    // System.out.println("CROSS: ready");
                     // wait player cross to move
                     waitMouseAction();
-                    System.out.println("CROSS: over");
+                    if (g.getCurrentState() != State.PLAYING) {
+                        break;
+                    }
+                    // System.out.println("CROSS: over");
 
                     // wait player nought to move
                     getLocation(g);
                     g.stepGame(CellState.NOUGHT);
-                    System.out.println("CROSS: haha");
+                    // System.out.println("CROSS: haha");
                 } else if (g.getUserRole() == CellState.NOUGHT) {
-                    System.out.println("NOUGH: wait");
+                    // System.out.println("NOUGH: wait");
                     // wait player cross to move
                     getLocation(g);
                     g.stepGame(CellState.CROSS);
+                    if (g.getCurrentState() != State.PLAYING) {
+                        break;
+                    }
                     
-                    System.out.println("NOUGH: ready");
+                    // System.out.println("NOUGH: ready");
                     // wait player cross to move
                     waitMouseAction();
-                    System.out.println("NOUGH: over");
+                    // System.out.println("NOUGH: over");
                 } else {
                     System.out.println("Program Error in playControl, current player wrong");
                     break;
                 }
             }
-            
+
+            // Game Over
+            postGameOver();
         }).start();
     }
 
@@ -224,6 +232,14 @@ public class Client {
         try {
             g.selectedRow = fromServer.readInt();
             g.selectedCol = fromServer.readInt();
+        } catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public void postGameOver() {
+        try {
+            toServer.writeUTF("OVER");
         } catch(IOException ex) {
             ex.printStackTrace();
         }

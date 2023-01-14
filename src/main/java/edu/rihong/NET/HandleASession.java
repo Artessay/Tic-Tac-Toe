@@ -48,6 +48,9 @@ public class HandleASession implements Runnable {
             String method;
             String account;
             int fortune;
+
+            DataInputStream temperatureInput;
+            DataOutputStream temperatureOutput;
             while (true) {
                 method = inputStreamPlayer1.readUTF();
                 switch (method) {
@@ -68,7 +71,22 @@ public class HandleASession implements Runnable {
                         fortune = inputStreamPlayer1.readInt();
                         database.updateFortune(account, fortune);
                         break;
+                    
+                    case "OVER":
+                        inputStreamPlayer2.readUTF();
 
+                        // swap input stream
+                        temperatureInput = inputStreamPlayer1;
+                        inputStreamPlayer1 = inputStreamPlayer2;
+                        inputStreamPlayer2 = temperatureInput;
+
+                        // swap output stream
+                        temperatureOutput = outputStreamPlayer1;
+                        outputStreamPlayer1 = outputStreamPlayer2;
+                        outputStreamPlayer2 = temperatureOutput;
+                        
+                        continue;
+                        
                     default:
                         System.out.println("[server] Error, method " + method + " get");
                         break;
@@ -93,6 +111,21 @@ public class HandleASession implements Runnable {
                         fortune = inputStreamPlayer2.readInt();
                         database.updateFortune(account, fortune);
                         break;
+                        
+                    case "OVER":
+                        inputStreamPlayer1.readUTF();
+
+                        // swap input stream
+                        temperatureInput = inputStreamPlayer1;
+                        inputStreamPlayer1 = inputStreamPlayer2;
+                        inputStreamPlayer2 = temperatureInput;
+
+                        // swap output stream
+                        temperatureOutput = outputStreamPlayer1;
+                        outputStreamPlayer1 = outputStreamPlayer2;
+                        outputStreamPlayer2 = temperatureOutput;
+
+                        continue;
 
                     default:
                         System.out.println("[server] Error, method " + method + " get");
