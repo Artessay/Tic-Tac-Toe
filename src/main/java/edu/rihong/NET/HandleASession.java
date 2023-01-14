@@ -5,6 +5,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import edu.rihong.DB.Database;
+
 public class HandleASession implements Runnable {
     private Socket socketPlayer1;
     private Socket socketPlayer2;
@@ -14,9 +16,12 @@ public class HandleASession implements Runnable {
     private DataInputStream inputStreamPlayer2;
     private DataOutputStream outputStreamPlayer2;
 
-    public HandleASession(Socket player1, Socket player2) {
+    private Database database;
+
+    public HandleASession(Socket player1, Socket player2, Database database) {
         this.socketPlayer1 = player1;
         this.socketPlayer2 = player2;
+        this.database = database;
 
         try {
             // get player1 socket resource
@@ -41,38 +46,58 @@ public class HandleASession implements Runnable {
         try {
             int row, col;
             String method;
+            String account;
+            int fortune;
             while (true) {
                 method = inputStreamPlayer1.readUTF();
-                if (method.equals("PLAY") == false) {
-                    System.out.println("[server] Error, method " + method + " get");
-                    break;
-                }
-
-                row = inputStreamPlayer1.readInt();
-                col = inputStreamPlayer1.readInt();
-
-                System.out.println("[server] read from player1 (" + row + ", " + col + ")");
-
-                outputStreamPlayer2.writeInt(row);
-                outputStreamPlayer2.writeInt(col);
+                switch (method) {
+                    case "PLAY":
+                        row = inputStreamPlayer1.readInt();
+                        col = inputStreamPlayer1.readInt();
+        
+                        System.out.println("[server] read from player1 (" + row + ", " + col + ")");
+        
+                        outputStreamPlayer2.writeInt(row);
+                        outputStreamPlayer2.writeInt(col);
+                        
+                        System.out.println("[server] write to player2 (" + row + ", " + col + ")");        
+                        break;
                 
-                System.out.println("[server] write to player2 (" + row + ", " + col + ")");
+                    case "FORTUNE":
+                        account = inputStreamPlayer1.readUTF();
+                        fortune = inputStreamPlayer1.readInt();
+                        database.updateFortune(account, fortune);
+                        break;
+
+                    default:
+                        System.out.println("[server] Error, method " + method + " get");
+                        break;
+                }
 
                 method = inputStreamPlayer2.readUTF();
-                if (method.equals("PLAY") == false) {
-                    System.out.println("[server] Error, method " + method + " get");
-                    break;
+                switch (method) {
+                    case "PLAY":
+                        row = inputStreamPlayer2.readInt();
+                        col = inputStreamPlayer2.readInt();
+                        
+                        System.out.println("[server] read from player2 (" + row + ", " + col + ")");
+
+                        outputStreamPlayer1.writeInt(row);
+                        outputStreamPlayer1.writeInt(col);
+                        
+                        System.out.println("[server] write to player1 (" + row + ", " + col + ")");      
+                        break;
+                
+                    case "FORTUNE":
+                        account = inputStreamPlayer2.readUTF();
+                        fortune = inputStreamPlayer2.readInt();
+                        database.updateFortune(account, fortune);
+                        break;
+
+                    default:
+                        System.out.println("[server] Error, method " + method + " get");
+                        break;
                 }
-
-                row = inputStreamPlayer2.readInt();
-                col = inputStreamPlayer2.readInt();
-                
-                System.out.println("[server] read from player2 (" + row + ", " + col + ")");
-
-                outputStreamPlayer1.writeInt(row);
-                outputStreamPlayer1.writeInt(col);
-                
-                System.out.println("[server] write to player1 (" + row + ", " + col + ")");
             }
         } catch (IOException e) {
             // Auto-generated catch block

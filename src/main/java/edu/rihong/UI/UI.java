@@ -13,6 +13,7 @@ import java.awt.*;
 public class UI {
     static Image icon = new ImageIcon("img/icon.jpg").getImage();
     private App app;
+    private JFrame frame;
 
     public UI(App app) {
         this.app = app;
@@ -22,7 +23,7 @@ public class UI {
     public void createUI() {
 
         //Creating the Frame
-        JFrame frame = new JFrame("Art Room");
+        frame = new JFrame("Art Room");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(Frame.MAXIMIZED_BOTH);
         frame.setResizable(true);
@@ -54,7 +55,7 @@ public class UI {
         userNameLabel.setBounds((int)(0.85 * screenWidth), (int)(0.4 * screenHeight), (int)(0.15 * screenWidth), (int)(0.1 * screenHeight));
         container.add(userNameLabel);
 
-        JLabel fortuneLabel = new JLabel("fortune: " + String.valueOf(app.user.getFortune()));
+        fortuneLabel = new JLabel("fortune: " + String.valueOf(app.user.getFortune()));
         fortuneLabel.setHorizontalAlignment(SwingConstants.CENTER);
         fortuneLabel.setFont(new Font(Font.MONOSPACED, Font.BOLD, 24));
         fortuneLabel.setBounds((int)(0.85 * screenWidth), (int)(0.45 * screenHeight), (int)(0.15 * screenWidth), (int)(0.1 * screenHeight));
@@ -167,6 +168,11 @@ public class UI {
         frame.setVisible(true);
     }
 
+    public void repaint() {
+        fortuneLabel.setText("fortune: " + String.valueOf(app.user.getFortune()));
+        frame.repaint();
+    }
+
     private ImageIcon updateFace() {
         ImageIcon face;
         if (app.user.loginState == false) {
@@ -180,6 +186,7 @@ public class UI {
         return face;
     }
 
-    GamePanel gamePanel;
+    private GamePanel gamePanel;
+    private JLabel fortuneLabel;
     private JButton buttonLogin, buttonRegister;
 }

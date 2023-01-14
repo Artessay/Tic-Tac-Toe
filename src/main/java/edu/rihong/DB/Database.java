@@ -94,4 +94,14 @@ public class Database {
         }
     }
     
+    public void updateFortune(String account, int fortune) {
+        try {
+            String updateString = "update user set fortune = " + fortune +
+                " where uid = '" + account + "'";
+            
+            statement.executeUpdate(updateString);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -37,7 +37,7 @@ public class Client {
         }
     }
 
-    public void finalize() {
+    public void close() {
         try {
             fromServer.close();
             toServer.close();
@@ -95,6 +95,17 @@ public class Client {
         }
 
         return false;
+    }
+
+    public void postFortuneUpdate(String accout, int fortune) {
+        try {
+            toServer.writeUTF("FORTUNE");
+            toServer.writeUTF(accout);
+            toServer.writeInt(fortune);
+        } catch (IOException e) {
+            // Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     public void postReady(String account) {

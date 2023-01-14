@@ -48,7 +48,7 @@ public class GamePanel extends JPanel {
                      selectedRow = row;
                      selectedCol = col;
                      stepGame(currentPlayer);
-System.out.println("Clicked");
+
                      // notify opponent
                      app.networkClient.resetWaitMove();
                      app.networkClient.sendLocation(selectedRow, selectedCol);
@@ -58,6 +58,17 @@ System.out.println("Clicked");
             } else if (currentState == State.DRAW 
                   || currentState == State.CROSS_WON 
                   || currentState == State.NOUGHT_WON) {
+               // change fortune
+               if (currentState != State.DRAW) {
+                  if (currentPlayer != userRole) {
+                     app.win();
+                  } else {
+                     app.loss();
+                  }
+               }
+               
+
+               // change user role
                userRole = (userRole == CellState.CROSS) ? CellState.NOUGHT : CellState.CROSS;   // flip user role
                newGame();  // restart the game
             }
@@ -170,7 +181,7 @@ System.out.println("Clicked");
          // draw status bar
          if (currentState == State.PLAYING) {
             statusBar.setForeground(Color.BLACK);
-            statusBar.setText((currentPlayer == CellState.CROSS) ? "X's Turn" : "O's Turn");
+            statusBar.setText((currentPlayer == userRole) ? "Your Turn" : "Wait for Moving");
          } else if (currentState == State.DRAW) {
             statusBar.setForeground(Color.RED);
             statusBar.setText("It's a Draw! Click to play again.");

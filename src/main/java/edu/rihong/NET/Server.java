@@ -99,7 +99,7 @@ class HandleAClient implements Runnable {
 
                         if (play) {
                             SwingUtilities.invokeLater(() -> textAreaLog.append(new Date() + ": [server] two players are ready, game starts\n"));
-                            new Thread(new HandleASession(opponent, socket)).start();
+                            new Thread(new HandleASession(opponent, socket, database)).start();
                         } else {
                             SwingUtilities.invokeLater(() -> textAreaLog.append(new Date() + ": [server] one player is waiting\n"));
                             outputToClient.writeInt(Protocol.WAIT_PLAYER.ordinal());

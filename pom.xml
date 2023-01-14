@@ -10,7 +10,7 @@
 
   <name>art</name>
   <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <!-- <url>http://www.example.com</url> -->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -29,8 +29,8 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.31</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/lib/mysql-connector-j-8.0.31.jar</systemPath>
+      <!-- <scope>system</scope>
+      <systemPath>${pom.basedir}/lib/mysql-connector-j-8.0.31.jar</systemPath> -->
     </dependency>
   </dependencies>
 
@@ -50,6 +50,9 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.0</version>
+          <configuration>
+            <compilerArgument>-Xlint:deprecation</compilerArgument>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
