@@ -233,7 +233,7 @@ public class Client {
             g.selectedRow = fromServer.readInt();
             g.selectedCol = fromServer.readInt();
         } catch(IOException ex) {
-            ex.printStackTrace();
+            // ex.printStackTrace();
         }
     }
 
